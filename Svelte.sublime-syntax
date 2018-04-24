@@ -1,0 +1,345 @@
+%YAML 1.2
+---
+name: Svelte
+file_extensions:
+  - svlt
+  - svelte
+scope: embedding.svelte
+
+variables:
+  unquoted_attribute_value: (?:[^\s<>/''"]|/(?!>))+
+  not_equals_lookahead: (?=\s*[^\s=])
+
+contexts:
+  main:
+    - match: ''
+      push: scope:text.html.basic
+      with_prototype:
+        - include: script-embeds
+        - include: style-embeds
+
+        - match: (<!--)(-?>)?
+          captures:
+            1: punctuation.definition.comment.begin.html
+            2: invalid.illegal.bad-comments-or-CDATA.html
+          push:
+            - meta_scope: comment.block.html
+            - match: (<!-)?(--\s*>)
+              captures:
+                1: invalid.illegal.bad-comments-or-CDATA.html
+                2: punctuation.definition.comment.end.html
+              pop: true
+            - match: <!--(?!-?>)|--!>
+              scope: invalid.illegal.bad-comments-or-CDATA.html
+
+        - match: (</?)(svelte:(?:self|component|head|window))\b
+          captures:
+            1: punctuation.definition.tag.begin.svelte support.other.svelte
+            2: entity.name.tag.custom.svelte support.other.svelte
+          push:
+            - meta_scope: meta.tag.custom.svelte
+            - match: (?:\s*/)?>
+              scope: punctuation.definition.tag.end.svelte support.other.svelte
+              pop: true
+
+        - match: \b(on|in|out|transition)(:)([a-z0-9_-]+)\b
+          captures:
+            1: support.function.svelte
+            2: punctuation.separator.svelte
+            3: string.unquoted.svelte
+          push:
+            - match: (=)\s*
+              captures:
+                1: punctuation.separator.key-value.svelte
+              push:
+                - include: quoted-embed
+            - match: (?!=)\s*
+              pop: true
+
+        - match: \b(bind)(:)([a-z0-9_-]+)\b
+          captures:
+            1: support.function.svelte
+            2: punctuation.separator.svelte
+            3: string.unquoted.svelte
+          push:
+            - match: (=)\s*
+              captures:
+                1: punctuation.separator.key-value.svelte
+              push:
+                - include: quoted-embed
+                - include: unquoted-embed
+            - match: (?!=)\s*
+              pop: true
+
+        - match: \{
+          scope: punctuation.section.embedded.begin.svelte
+          push:
+            - meta_scope: meta.embedded.block.svelte
+            - meta_content_scope: source.svelte
+
+            - match: \}
+              scope: punctuation.section.embedded.end.svelte
+              pop: true
+
+            - match: (@)html
+              scope: punctuation.section.embedded.end.svelte
+
+            - match: (\#|\/)each
+              scope: keyword.control.loop.svelte
+
+            - match: (\#|\/)if
+              scope: keyword.control.conditional.svelte
+
+            - match: (:)else(?:if)?
+              scope: keyword.control.conditional.svelte
+
+            - match: (\#|\/)await
+              scope: punctuation.section.embedded.end.svelte
+
+            - match: (:)then|(:)catch
+              scope: punctuation.section.embedded.end.svelte
+
+            - match: as
+              scope: keyword.operator.logical.svelte
+
+            - include: scope:source.js
+
+  quoted-embed:
+    - match: \"
+      scope: string.quoted.double punctuation.definition.embedded.begin.svelte
+      set:
+        - meta_scope: meta.embedded.block.svelte
+        - meta_content_scope: string.quoted.double source.svelte
+        - match: \"
+          scope: string.quoted.double punctuation.definition.embedded.end.svelte
+          pop: true
+        - include: scope:source.js
+
+    - match: \'
+      scope: string.quoted.single punctuation.definition.embedded.begin.svelte
+      set:
+        - meta_scope: meta.embedded.block.svelte
+        - meta_content_scope: string.quoted.single source.svelte
+        - match: \'
+          scope: string.quoted.single punctuation.definition.embedded.end.svelte
+          pop: true
+        - include: scope:source.js
+
+  unquoted-embed:
+    - match: ''
+      scope: string.quoted.single punctuation.definition.embedded.begin.svelte
+      set:
+        - meta_scope: meta.embedded.block.svelte
+        - meta_content_scope: string.quoted.single source.svelte
+        - match: \b
+          scope: string.quoted.single punctuation.definition.embedded.end.svelte
+          pop: true
+        - include: scope:source.js
+
+  script-embeds:
+    - match: \s*(<)(script)\b(?=[^>]*type=(?:["'])text\/ts(?:["']))
+      captures:
+        0: meta.tag.script.begin.svelte
+        1: punctuation.definition.tag.begin.svelte
+        2: entity.name.tag.script.svelte
+      push:
+        - match: (?i)(-->)?\s*(</)(script)(>)
+          captures:
+            0: meta.tag.script.end.svelte
+            1: comment.block.svelte punctuation.definition.comment.svelte
+            2: punctuation.definition.tag.begin.svelte
+            3: entity.name.tag.script.svelte
+            4: punctuation.definition.tag.end.svelte
+          pop: true
+        - match: (>)\s*(<!--)?
+          captures:
+            1: meta.tag.script.begin.svelte punctuation.definition.tag.end.svelte
+            2: comment.block.svelte punctuation.definition.comment.svelte
+          embed: scope:source.ts
+          escape: (?i)(?=(-->)?\s*</script)
+        - match: ''
+          push:
+            - meta_scope: meta.tag.script.begin.svelte
+            - match: (?=>)
+              pop: true
+            - include: scope:text.html.basic#tag-stuff
+
+    - match: (<)((?i:script))\b(?![^>]*/>)(?![^>]*(?i:type.?=.?text/((?!javascript).*)))
+      captures:
+        0: meta.tag.script.begin.svelte
+        1: punctuation.definition.tag.begin.svelte
+        2: entity.name.tag.script.svelte
+      push:
+        - match: (?i)(-->)?\s*(</)(script)(>)
+          captures:
+            0: meta.tag.script.end.svelte
+            1: comment.block.svelte punctuation.definition.comment.svelte
+            2: punctuation.definition.tag.begin.svelte
+            3: entity.name.tag.script.svelte
+            4: punctuation.definition.tag.end.svelte
+          pop: true
+        - match: (>)\s*(<!--)?
+          captures:
+            1: meta.tag.script.begin.svelte punctuation.definition.tag.end.svelte
+            2: comment.block.svelte punctuation.definition.comment.svelte
+          embed: scope:source.js
+          # embed_scope: source.js.embedded.svelte
+          escape: (?i)(?=(-->)?\s*</script)
+        - match: ''
+          push:
+            - meta_scope: meta.tag.script.begin.svelte
+            - match: (?=>)
+              pop: true
+            - include: scope:text.html.basic#tag-stuff
+
+  style-embeds:
+    - match: \s*(<)(style)\b(?=[^>]*type=(?:["'])text\/scss(?:["']))
+      captures:
+        0: meta.tag.style.begin.svelte
+        1: punctuation.definition.tag.begin.svelte
+        2: entity.name.tag.style.svelte
+      push:
+        - match: (?i)(</)(style)(>)
+          captures:
+            0: meta.tag.style.end.svelte
+            1: punctuation.definition.tag.begin.svelte
+            2: entity.name.tag.style.svelte
+            3: punctuation.definition.tag.end.svelte
+          pop: true
+        - match: (>)\s*
+          captures:
+            1: meta.tag.style.begin.svelte punctuation.definition.tag.end.svelte
+          embed: scope:source.scss
+          escape: (?i)(?=</style)
+        - match: ''
+          push:
+            - meta_scope: meta.tag.style.begin.svelte
+            - match: (?=>)
+              pop: true
+            - include: scope:text.html.basic#tag-stuff
+
+    - match: \s*(<)(style)\b(?=[^>]*type=(?:["'])text\/sass(?:["']))
+      captures:
+        0: meta.tag.style.begin.svelte
+        1: punctuation.definition.tag.begin.svelte
+        2: entity.name.tag.style.svelte
+      push:
+        - match: (?i)(</)(style)(>)
+          captures:
+            0: meta.tag.style.end.svelte
+            1: punctuation.definition.tag.begin.svelte
+            2: entity.name.tag.style.svelte
+            3: punctuation.definition.tag.end.svelte
+          pop: true
+        - match: (>)\s*
+          captures:
+            1: meta.tag.style.begin.svelte punctuation.definition.tag.end.svelte
+          embed: scope:source.sass
+          escape: (?i)(?=</style)
+        - match: ''
+          push:
+            - meta_scope: meta.tag.style.begin.svelte
+            - match: (?=>)
+              pop: true
+            - include: scope:text.html.basic#tag-stuff
+
+    - match: \s*(<)(style)\b(?=[^>]*type=(?:["'])text\/less(?:["']))
+      captures:
+        0: meta.tag.style.begin.svelte
+        1: punctuation.definition.tag.begin.svelte
+        2: entity.name.tag.style.svelte
+      push:
+        - match: (?i)(</)(style)(>)
+          captures:
+            0: meta.tag.style.end.svelte
+            1: punctuation.definition.tag.begin.svelte
+            2: entity.name.tag.style.svelte
+            3: punctuation.definition.tag.end.svelte
+          pop: true
+        - match: (>)\s*
+          captures:
+            1: meta.tag.style.begin.svelte punctuation.definition.tag.end.svelte
+          embed: scope:source.less
+          escape: (?i)(?=</style)
+        - match: ''
+          push:
+            - meta_scope: meta.tag.style.begin.svelte
+            - match: (?=>)
+              pop: true
+            - include: scope:text.html.basic#tag-stuff
+
+    - match: \s*(<)(style)\b(?=[^>]*type=(?:["'])text\/stylus(?:["']))
+      captures:
+        0: meta.tag.style.begin.svelte
+        1: punctuation.definition.tag.begin.svelte
+        2: entity.name.tag.style.svelte
+      push:
+        - match: (?i)(</)(style)(>)
+          captures:
+            0: meta.tag.style.end.svelte
+            1: punctuation.definition.tag.begin.svelte
+            2: entity.name.tag.style.svelte
+            3: punctuation.definition.tag.end.svelte
+          pop: true
+        - match: (>)\s*
+          captures:
+            1: meta.tag.style.begin.svelte punctuation.definition.tag.end.svelte
+          embed: scope:source.stylus
+          escape: (?i)(?=</style)
+        - match: ''
+          push:
+            - meta_scope: meta.tag.style.begin.svelte
+            - match: (?=>)
+              pop: true
+            - include: scope:text.html.basic#tag-stuff
+
+    - match: \s*(<)(style)\b(?=[^>]*type=(?:["'])text\/postcss(?:["']))
+      captures:
+        0: meta.tag.style.begin.svelte
+        1: punctuation.definition.tag.begin.svelte
+        2: entity.name.tag.style.svelte
+      push:
+        - match: (?i)(</)(style)(>)
+          captures:
+            0: meta.tag.style.end.svelte
+            1: punctuation.definition.tag.begin.svelte
+            2: entity.name.tag.style.svelte
+            3: punctuation.definition.tag.end.svelte
+          pop: true
+        - match: (>)\s*
+          captures:
+            1: meta.tag.style.begin.svelte punctuation.definition.tag.end.svelte
+          embed: scope:source.postcss
+          escape: (?i)(?=</style)
+        - match: ''
+          push:
+            - meta_scope: meta.tag.style.begin.svelte
+            - match: (?=>)
+              pop: true
+            - include: scope:text.html.basic#tag-stuff
+
+    - match: (?:^\s+)?(<)((?i:style))\b(?![^>]*/>)
+      captures:
+        0: meta.tag.style.begin.svelte
+        1: punctuation.definition.tag.begin.svelte
+        2: entity.name.tag.style.svelte
+      push:
+        - match: (?i)(</)(style)(>)
+          captures:
+            0: meta.tag.style.end.svelte
+            1: punctuation.definition.tag.begin.svelte
+            2: entity.name.tag.style.svelte
+            3: punctuation.definition.tag.end.svelte
+          pop: true
+        - match: (>)\s*
+          captures:
+            1: meta.tag.style.begin.svelte punctuation.definition.tag.end.svelte
+          embed: scope:source.css
+          escape: (?i)(?=</style)
+        - match: ''
+          push:
+            - meta_scope: meta.tag.style.begin.svelte
+            - match: (?=>)
+              pop: true
+            - include: scope:text.html.basic#tag-stuff
+
