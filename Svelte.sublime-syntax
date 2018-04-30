@@ -7,8 +7,10 @@ file_extensions:
 scope: embedding.svelte
 
 variables:
-  unquoted_attribute_value: (?:[^\s<>/''"]|/(?!>))+
-  not_equals_lookahead: (?=\s*[^\s=])
+  identifier_start: '[_$\p{L}\p{Nl}]'
+  identifier_part: '[_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]'
+  identifier_break: (?!{{identifier_part}})
+  identifier: '{{identifier_start}}{{identifier_part}}*{{identifier_break}}'
 
 contexts:
   main:
@@ -42,23 +44,9 @@ contexts:
               scope: punctuation.definition.tag.end.svelte support.other.svelte
               pop: true
 
-        - match: \b(on|in|out|transition)(:)([a-z0-9_-]+)\b
+        - match: \b(on|bind|in|out|transition)(:)([a-z0-9_-]+)\b
           captures:
-            1: support.function.svelte
-            2: punctuation.separator.svelte
-            3: string.unquoted.svelte
-          push:
-            - match: (=)\s*
-              captures:
-                1: punctuation.separator.key-value.svelte
-              push:
-                - include: quoted-embed
-            - match: (?!=)\s*
-              pop: true
-
-        - match: \b(bind)(:)([a-z0-9_-]+)\b
-          captures:
-            1: support.function.svelte
+            1: entity.other.attribute-name.svelte support.function.svelte
             2: punctuation.separator.svelte
             3: string.unquoted.svelte
           push:
@@ -126,15 +114,12 @@ contexts:
         - include: scope:source.js
 
   unquoted-embed:
-    - match: ''
-      scope: string.quoted.single punctuation.definition.embedded.begin.svelte
-      set:
-        - meta_scope: meta.embedded.block.svelte
-        - meta_content_scope: string.quoted.single source.svelte
-        - match: \b
-          scope: string.quoted.single punctuation.definition.embedded.end.svelte
-          pop: true
-        - include: scope:source.js
+    - match: '({{identifier}})'
+      captures:
+        0: meta.embedded.block.svelte
+        1: string.unquoted source.svelte variable.other.readwrite.js
+    - match: \s
+      pop: true
 
   script-embeds:
     - match: \s*(<)(script)\b(?=[^>]*type=(?:["'])text\/ts(?:["']))
