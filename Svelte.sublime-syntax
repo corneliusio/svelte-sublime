@@ -43,54 +43,86 @@ contexts:
             - match: (?:\s*/)?>
               scope: punctuation.definition.tag.end.svelte support.other.svelte
               pop: true
-
-        - match: \b(on|bind|in|out|transition)(:)([a-z0-9_-]+)\b
-          captures:
-            1: entity.other.attribute-name.svelte support.function.svelte
-            2: punctuation.separator.svelte
-            3: string.unquoted.svelte
-          push:
-            - match: (=)\s*
-              captures:
-                1: punctuation.separator.key-value.svelte
+            - include: attributes
+            - include: interpolation
+            - match: (?:[^ "'>/=\x00-\x1f\x7f-\x9f])
               push:
-                - include: quoted-embed
-                - include: unquoted-embed
-            - match: (?!=)\s*
-              pop: true
+                - scope:text.html.basic#tag-generic-attribute-meta
+                - scope:text.html.basic#generic-attribute-name
+              with_prototype:
+                - match: '='
+                  scope: punctuation.separator.key-value.html
+                  set: scope:text.html.basic#tag-generic-attribute-value
+                  with_prototype:
+                    - include: interpolation
+                - match: (?=\s*[^\s=])
+                  pop: true
 
-        - match: \{
-          scope: punctuation.section.embedded.begin.svelte
+        - include: attributes
+        - include: control
+
+  attributes:
+    - match: \b(on|bind|in|out|transition)(:)([a-z0-9_-]+)\b
+      captures:
+        1: entity.other.attribute-name.svelte support.function.svelte
+        2: punctuation.separator.svelte
+        3: string.unquoted.svelte
+      push:
+        - match: (=)\s*
+          captures:
+            1: punctuation.separator.key-value.svelte
           push:
-            - meta_scope: meta.embedded.block.svelte
-            - meta_content_scope: source.svelte
+            - include: quoted-embed
+            - include: unquoted-embed
+        - match: (?!=)\s*
+          pop: true
 
-            - match: \}
-              scope: punctuation.section.embedded.end.svelte
-              pop: true
+  interpolation:
+    - match: \{
+      scope: punctuation.section.embedded.begin.svelte
+      push:
+        - meta_scope: meta.embedded.block.svelte
+        - meta_content_scope: source.svelte
 
-            - match: (@)html
-              scope: punctuation.section.embedded.end.svelte
+        - match: \}
+          scope: punctuation.section.embedded.end.svelte
+          pop: true
 
-            - match: (\#|\/)each
-              scope: keyword.control.loop.svelte
+        - include: scope:source.js
 
-            - match: (\#|\/)if
-              scope: keyword.control.conditional.svelte
+  control:
+    - match: \{
+      scope: punctuation.section.embedded.begin.svelte
+      push:
+        - meta_scope: meta.embedded.block.svelte
+        - meta_content_scope: source.svelte
 
-            - match: (:)else(?:if)?
-              scope: keyword.control.conditional.svelte
+        - match: \}
+          scope: punctuation.section.embedded.end.svelte
+          pop: true
 
-            - match: (\#|\/)await
-              scope: punctuation.section.embedded.end.svelte
+        - match: (@)html
+          scope: punctuation.section.embedded.end.svelte
 
-            - match: (:)then|(:)catch
-              scope: punctuation.section.embedded.end.svelte
+        - match: (\#|\/)each
+          scope: keyword.control.loop.svelte
 
-            - match: as
-              scope: keyword.operator.logical.svelte
+        - match: (\#|\/)if
+          scope: keyword.control.conditional.svelte
 
-            - include: scope:source.js
+        - match: (:)else(?:if)?
+          scope: keyword.control.conditional.svelte
+
+        - match: (\#|\/)await
+          scope: punctuation.section.embedded.end.svelte
+
+        - match: (:)then|(:)catch
+          scope: punctuation.section.embedded.end.svelte
+
+        - match: as
+          scope: keyword.operator.logical.svelte
+
+        - include: scope:source.js
 
   quoted-embed:
     - match: \"
@@ -147,7 +179,7 @@ contexts:
             - meta_scope: meta.tag.script.begin.svelte
             - match: (?=>)
               pop: true
-            - include: scope:text.html.basic#tag-stuff
+            - include: scope:text.html.basic#tag-attributes
 
     - match: (<)((?i:script))\b(?![^>]*/>)(?![^>]*(?i:type.?=.?text/((?!javascript).*)))
       captures:
@@ -175,7 +207,7 @@ contexts:
             - meta_scope: meta.tag.script.begin.svelte
             - match: (?=>)
               pop: true
-            - include: scope:text.html.basic#tag-stuff
+            - include: scope:text.html.basic#tag-attributes
 
   style-embeds:
     - match: \s*(<)(style)\b(?=[^>]*type=(?:["'])text\/scss(?:["']))
@@ -201,7 +233,7 @@ contexts:
             - meta_scope: meta.tag.style.begin.svelte
             - match: (?=>)
               pop: true
-            - include: scope:text.html.basic#tag-stuff
+            - include: scope:text.html.basic#tag-attributes
 
     - match: \s*(<)(style)\b(?=[^>]*type=(?:["'])text\/sass(?:["']))
       captures:
@@ -226,7 +258,7 @@ contexts:
             - meta_scope: meta.tag.style.begin.svelte
             - match: (?=>)
               pop: true
-            - include: scope:text.html.basic#tag-stuff
+            - include: scope:text.html.basic#tag-attributes
 
     - match: \s*(<)(style)\b(?=[^>]*type=(?:["'])text\/less(?:["']))
       captures:
@@ -251,7 +283,7 @@ contexts:
             - meta_scope: meta.tag.style.begin.svelte
             - match: (?=>)
               pop: true
-            - include: scope:text.html.basic#tag-stuff
+            - include: scope:text.html.basic#tag-attributes
 
     - match: \s*(<)(style)\b(?=[^>]*type=(?:["'])text\/stylus(?:["']))
       captures:
@@ -276,7 +308,7 @@ contexts:
             - meta_scope: meta.tag.style.begin.svelte
             - match: (?=>)
               pop: true
-            - include: scope:text.html.basic#tag-stuff
+            - include: scope:text.html.basic#tag-attributes
 
     - match: \s*(<)(style)\b(?=[^>]*type=(?:["'])text\/postcss(?:["']))
       captures:
@@ -301,7 +333,7 @@ contexts:
             - meta_scope: meta.tag.style.begin.svelte
             - match: (?=>)
               pop: true
-            - include: scope:text.html.basic#tag-stuff
+            - include: scope:text.html.basic#tag-attributes
 
     - match: (?:^\s+)?(<)((?i:style))\b(?![^>]*/>)
       captures:
@@ -326,5 +358,5 @@ contexts:
             - meta_scope: meta.tag.style.begin.svelte
             - match: (?=>)
               pop: true
-            - include: scope:text.html.basic#tag-stuff
+            - include: scope:text.html.basic#tag-attributes
 
