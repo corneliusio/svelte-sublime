@@ -62,7 +62,7 @@ contexts:
         - include: control
 
   attributes:
-    - match: \b(on|bind|in|out|transition)(:)([a-z0-9_-]+)\b
+    - match: \b(on|bind|in|out|transition|class)(:)([a-z0-9_-]+)\b
       captures:
         1: entity.other.attribute-name.svelte support.function.svelte
         2: punctuation.separator.svelte
