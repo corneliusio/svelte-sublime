@@ -101,7 +101,7 @@ contexts:
           scope: punctuation.section.embedded.end.svelte
           pop: true
 
-        - match: (@)html
+        - match: (@)(html|debug)
           scope: punctuation.section.embedded.begin.svelte
 
         - match: (\#|\/)each
