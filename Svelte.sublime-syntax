@@ -102,7 +102,7 @@ contexts:
           pop: true
 
         - match: (@)html
-          scope: punctuation.section.embedded.end.svelte
+          scope: punctuation.section.embedded.begin.svelte
 
         - match: (\#|\/)each
           scope: keyword.control.loop.svelte
