@@ -1,6 +1,6 @@
 %YAML 1.2
 ---
-name: Svelte
+name: Svelte Dev
 file_extensions:
   - svlt
   - svelte
@@ -114,10 +114,10 @@ contexts:
           scope: keyword.control.conditional.svelte
 
         - match: (\#|\/)await
-          scope: punctuation.section.embedded.end.svelte
+          scope: keyword.control.await.svelte
 
         - match: (:)then|(:)catch
-          scope: punctuation.section.embedded.end.svelte
+          scope: keyword.control.await.svelte
 
         - match: as
           scope: keyword.operator.logical.svelte
