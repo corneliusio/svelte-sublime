@@ -1,0 +1,164 @@
+%YAML 1.2
+%TAG ! tag:yaml-macros:macros:
+---
+!extend
+_base: HTML.yaml
+name: Svelte
+file_extensions:
+  - svlt
+  - svelte
+scope: text.html.svelte
+
+contexts: !merge
+  main: !prepend
+    - include: control
+
+  tag-attributes: !prepend
+    - include: push-interpolation
+    - include: svelte-attributes
+
+  entities: !prepend
+    - include: push-interpolation
+
+  tag-id-attribute-value: !prepend
+    - include: set-interpolation
+
+  tag-class-attribute-value: !prepend
+    - include: set-interpolation
+
+  tag-style-attribute-value: !prepend
+    - include: set-interpolation
+
+  tag-event-attribute-value: !prepend
+    - include: set-interpolation
+
+  tag-generic-attribute-value: !prepend
+    - include: set-interpolation
+
+  svelte-attributes:
+    - match: !word (on|bind|in|out|transition|class)(:)([a-z0-9_-]+)
+      captures:
+        1: entity.other.attribute-name.svelte support.function.svelte
+        2: punctuation.separator.svelte
+        3: string.unquoted.svelte
+      push: js-attribute-value
+
+  js-attribute-value:
+    - match: '='
+      scope: punctuation.separator.key-value.html
+      set: js-string
+    - include: else-pop
+
+  js-string:
+    - match: '"'
+      scope: punctuation.definition.string.begin.html
+      embed: scope:source.js
+      escape: '"'
+      escape_captures:
+        0: punctuation.definition.string.end.html
+    - match: "'"
+      scope: punctuation.definition.string.begin.html
+      embed: scope:source.js
+      escape: "'"
+      escape_captures:
+        0: punctuation.definition.string.end.html
+    - include: else-pop
+
+  control:
+    - match: \{@(html|debug)
+      scope: punctuation.section.embedded.begin.svelte
+      push: embed-scope
+
+    - match: (\{)(#each|\/each)
+      captures:
+        1: punctuation.section.embedded.begin.svelte
+        2: keyword.control.loop.svelte
+      push: embed-scope
+      with_prototype:
+        - match: as
+          scope: keyword.operator.logical.svelte
+
+    - match: (\{)(#if|\/if|:else(?:if)?)
+      captures:
+        1: punctuation.section.embedded.begin.svelte
+        2: keyword.control.conditional.svelte
+      push: embed-scope
+
+    - match: (\{)(#await|\/await|:then|:catch)
+      captures:
+        1: punctuation.section.embedded.begin.svelte
+      scope: keyword.control.await.svelte
+      push: embed-scope
+
+  embed-scope:
+    - meta_scope: meta.embedded.block.svelte
+    - meta_content_scope: source.svelte
+    - match: \}
+      scope: punctuation.section.embedded.end.svelte
+      pop: true
+    - include: scope:source.js
+
+  set-interpolation:
+    - match: \{
+      scope: punctuation.section.embedded.begin.svelte
+      set: embed-scope
+
+  push-interpolation:
+    - match: \{
+      scope: punctuation.section.embedded.begin.svelte
+      push: embed-scope
+
+  style-common: !prepend
+    - include: style-lang-attribute
+
+  style-lang-attribute:
+    - match: !word type
+      scope: meta.attribute-with-value.html entity.other.attribute-name.html
+      set:
+        - meta_content_scope: meta.tag.style.begin.html meta.attribute-with-value.html
+        - match: =
+          scope: punctuation.separator.key-value.html
+          set:
+            - meta_content_scope: meta.tag.style.begin.html meta.attribute-with-value.html
+            - include: style-lang-decider
+        - match: (?=\S)
+          set: style-css
+
+  style-lang-decider:
+    - !style_language [ scss, source.scss ]
+    - !style_language [ sass, source.sass ]
+    - !style_language [ less, source.css.less ]
+    - !style_language [ stylus, source.stylus ]
+    - !style_language [ postcss, source.postcss ]
+    - !script_language [ ts, source.ts ]
+    - match: (?=\S)
+      set:
+        - style-css
+        - tag-generic-attribute-meta
+        - tag-generic-attribute-value
+
+  script-common: !prepend
+    - include: script-lang-attribute
+
+  script-lang-attribute:
+    - match: !word type
+      scope: meta.attribute-with-value.html entity.other.attribute-name.html
+      set:
+        - meta_content_scope: meta.tag.script.begin.html meta.attribute-with-value.html
+        - match: =
+          scope: punctuation.separator.key-value.html
+          set:
+            - meta_content_scope: meta.tag.script.begin.html meta.attribute-with-value.html
+            - include: script-lang-decider
+        - match: (?=\S)
+          set: script-javascript
+
+  script-lang-decider:
+    - !script_language [ ts, source.ts ]
+    - !script_language [ coffeescript, source.coffee ]
+    - !script_language [ livescript, source.livescript ]
+    - match: (?=\S)
+      set:
+        - script-javascript
+        - tag-generic-attribute-meta
+        - tag-generic-attribute-value
