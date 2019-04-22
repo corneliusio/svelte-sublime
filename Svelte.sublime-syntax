@@ -735,7 +735,7 @@ contexts:
       scope: punctuation.definition.tag.end.html
       pop: true
   svelte-attributes:
-    - match: (?i)\b(on|bind|in|out|transition|class)(:)([a-z0-9_-]+)\b
+    - match: (?i)\b(on|bind|in|out|transition|class|use|let)(:)([a-z0-9_-|]+)\b
       captures:
         1: entity.other.attribute-name.svelte support.function.svelte
         2: punctuation.separator.svelte

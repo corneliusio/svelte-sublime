@@ -36,7 +36,7 @@ contexts: !merge
     - include: set-interpolation
 
   svelte-attributes:
-    - match: !word (on|bind|in|out|transition|class)(:)([a-z0-9_-]+)
+    - match: !word (on|bind|in|out|transition|class|use|let)(:)([a-z0-9_-|]+)
       captures:
         1: entity.other.attribute-name.svelte support.function.svelte
         2: punctuation.separator.svelte
