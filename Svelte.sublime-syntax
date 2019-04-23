@@ -735,33 +735,12 @@ contexts:
       scope: punctuation.definition.tag.end.html
       pop: true
   svelte-attributes:
-    - match: (?i)\b(on|bind|in|out|transition|class)(:)([a-z0-9_-]+)\b
+    - match: (?i)\b(on|bind|in|out|transition|class|use|let)(:)([a-z0-9_-\|]+)\b
       captures:
         1: entity.other.attribute-name.svelte support.function.svelte
         2: punctuation.separator.svelte
         3: string.unquoted.svelte
-      push: js-attribute-value
-
-  js-attribute-value:
-    - match: '='
-      scope: punctuation.separator.key-value.html
-      set: js-string
-    - include: else-pop
-
-  js-string:
-    - match: '"'
-      scope: punctuation.definition.string.begin.html
-      embed: scope:source.js
-      escape: '"'
-      escape_captures:
-        0: punctuation.definition.string.end.html
-    - match: "'"
-      scope: punctuation.definition.string.begin.html
-      embed: scope:source.js
-      escape: "'"
-      escape_captures:
-        0: punctuation.definition.string.end.html
-    - include: else-pop
+      push: tag-generic-attribute-equals
 
   control:
     - match: \{@(html|debug)
@@ -889,20 +868,6 @@ contexts:
                   embed_scope: source.postcss.embedded.html
                   embed: scope:source.postcss
                   escape: (?i)(?=(?:-->\s*)?</style)
-        - tag-generic-attribute-meta
-        - tag-generic-attribute-value
-    - match: (?i)(?=text/ts(?!{unquoted_attribute_value})|\'text/ts\'|"text/ts")
-      set:
-        -   - meta_content_scope: meta.tag.script.begin.html
-            - include: script-common
-            - match: '>'
-              scope: punctuation.definition.tag.end.html
-              set:
-                - include: script-close-tag
-                - match: ''
-                  embed_scope: source.ts.embedded.html
-                  embed: scope:source.ts
-                  escape: (?i)(?=(?:-->\s*)?</script)
         - tag-generic-attribute-meta
         - tag-generic-attribute-value
     - match: (?=\S)

@@ -1,8 +1,6 @@
 # Svelte Syntax Highlighting
 
-**Note**: This package uses the new syntax definition that only works in Sublime build > 3153.
-
-Sublime Text Syntax highlighting for [Svelte](https://svelte.technology/) components.
+Sublime Text Syntax highlighting for [Svelte 3](https://svelte.dev/) components.
 
 <img src="media/hello-world.png">
 
@@ -17,7 +15,7 @@ Sublime Text Syntax highlighting for [Svelte](https://svelte.technology/) compon
 
 Huge thanks to the Vue.js folks for their [Vue Syntax Highlight](https://github.com/vuejs/vue-syntax-highlight/) package from which a *ton* of solutions for this package came.
 
-And, obviously, the biggest thanks to Rich Harris for making something as awesome as [Svelte](https://svelte.technology/).
+And, obviously, the biggest thanks to Rich Harris for making something as awesome as [Svelte](https://svelte.dev/).
 
 ### License
 

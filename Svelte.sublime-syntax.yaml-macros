@@ -36,33 +36,12 @@ contexts: !merge
     - include: set-interpolation
 
   svelte-attributes:
-    - match: !word (on|bind|in|out|transition|class)(:)([a-z0-9_-]+)
+    - match: !word (on|bind|in|out|transition|class|use|let)(:)([a-z0-9_-\|]+)
       captures:
         1: entity.other.attribute-name.svelte support.function.svelte
         2: punctuation.separator.svelte
         3: string.unquoted.svelte
-      push: js-attribute-value
-
-  js-attribute-value:
-    - match: '='
-      scope: punctuation.separator.key-value.html
-      set: js-string
-    - include: else-pop
-
-  js-string:
-    - match: '"'
-      scope: punctuation.definition.string.begin.html
-      embed: scope:source.js
-      escape: '"'
-      escape_captures:
-        0: punctuation.definition.string.end.html
-    - match: "'"
-      scope: punctuation.definition.string.begin.html
-      embed: scope:source.js
-      escape: "'"
-      escape_captures:
-        0: punctuation.definition.string.end.html
-    - include: else-pop
+      push: tag-generic-attribute-equals
 
   control:
     - match: \{@(html|debug)
@@ -130,7 +109,6 @@ contexts: !merge
     - !style_language [ less, source.css.less ]
     - !style_language [ stylus, source.stylus ]
     - !style_language [ postcss, source.postcss ]
-    - !script_language [ ts, source.ts ]
     - match: (?=\S)
       set:
         - style-css
