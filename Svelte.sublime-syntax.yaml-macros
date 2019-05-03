@@ -8,6 +8,12 @@ file_extensions:
   - svlt
   - svelte
 scope: text.html.svelte
+variables: !merge
+  ident_escape: (?:\\u(?:\h{4}|\{\h+\}))
+  ident_start: (?:[_$\p{L}\p{Nl}]|{{ident_escape}})
+  ident_part: (?:[_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]|{{ident_escape}})
+  ident_break: (?!{{ident_part}})
+  ident: (?:{{ident_start}}{{ident_part}}*{{ident_break}})
 
 contexts: !merge
   main: !prepend
@@ -52,10 +58,21 @@ contexts: !merge
       captures:
         1: punctuation.section.embedded.begin.svelte
         2: keyword.control.loop.svelte
-      push: embed-scope
-      with_prototype:
-        - match: as
-          scope: keyword.operator.logical.svelte
+      push:
+        - match: '(\b{{ident}}\b)\s*(\bas\b)\s*(\b{{ident}}\b)?((,)?\s*(\b{{ident}}\b))?(\s+([(])(\b{{ident}}\b)([)]))?'
+          scope: meta.each.svelte meta.group.svelte
+          captures:
+            1: variable.other.readwrite.js
+            2: keyword.operator.word.js
+            3: variable.other.readwrite.js
+            5: keyword.operator.comma.js
+            6: variable.other.readwrite.js
+            8: punctuation.section.group.begin.js
+            9: variable.other.readwrite.js
+            10: punctuation.section.group.begin.js
+        - match: \}
+          scope: punctuation.section.embedded.end.svelte
+          pop: true
 
     - match: (\{)(#if|\/if|:else(?:if)?)
       captures:
