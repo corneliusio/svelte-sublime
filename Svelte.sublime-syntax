@@ -8,26 +8,36 @@ first_line_match: (?i)<(!DOCTYPE\s*)?html
 scope: text.html.svelte
 variables:
   ascii_space: '\t\n\f '
+
+  # https://html.spec.whatwg.org/multipage/syntax.html#attributes-2
   attribute_name_char: '[{{ascii_space}}=/>]'
   attribute_name_start: (?=[^{{attribute_name_char}}])
   attribute_name_break: (?={{attribute_name_char}})
+
+  # https://html.spec.whatwg.org/multipage/syntax.html#syntax-attribute-value
   unquoted_attribute_start: (?=[^{{ascii_space}}=>])
   unquoted_attribute_break: (?=[{{ascii_space}}]|/?>)
+
+  # https://html.spec.whatwg.org/multipage/parsing.html#tag-name-state
   tag_name_char: '[^{{ascii_space}}/<>]'
   tag_name_break: (?=[^{{tag_name_char}}])
   tag_name: '[A-Za-z]{{tag_name_char}}*'
+
   block_tag_name: |-
     (?ix:
       address|applet|article|aside|blockquote|center|dd|dir|div|dl|dt|figcaption|figure|footer|frame|frameset|h1|h2|h3|h4|h5|h6|header|iframe|menu|nav|noframes|object|ol|p|pre|section|ul
     ){{tag_name_break}}
+
   inline_tag_name: |-
     (?ix:
       abbr|acronym|area|audio|b|base|basefont|bdi|bdo|big|br|canvas|caption|cite|code|del|details|dfn|dialog|em|font|head|html|i|img|ins|isindex|kbd|li|link|map|mark|menu|menuitem|meta|noscript|param|picture|q|rp|rt|rtc|ruby|s|samp|script|small|source|span|strike|strong|style|sub|summary|sup|time|title|track|tt|u|var|video|wbr
     ){{tag_name_break}}
+
   form_tag_name: |-
     (?ix:
       button|datalist|input|label|legend|meter|optgroup|option|output|progress|select|template|textarea
     ){{tag_name_break}}
+
   javascript_mime_type: |-
     (?ix:
       # https://mimesniff.spec.whatwg.org/#javascript-mime-type
@@ -36,6 +46,7 @@ variables:
       | text/jscript
       | text/livescript
     )
+
   custom_element_char: |-
     (?x:
       # https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-core-concepts
@@ -55,12 +66,9 @@ variables:
       | [\x{FDF0}-\x{FFFD}]
       | [\x{10000}-\x{EFFFF}]
     )
+
   script_close_lookahead: (?i:(?=(?:-->\s*)?</script))
-  ident_escape: (?:\\u(?:\h{4}|\{\h+\}))
-  ident_start: (?:[_$\p{L}\p{Nl}]|{{ident_escape}})
-  ident_part: (?:[_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]|{{ident_escape}})
-  ident_break: (?!{{ident_part}})
-  ident: (?:{{ident_start}}{{ident_part}}*{{ident_break}})
+
 contexts:
   immediately-pop:
     - match: ''
@@ -743,21 +751,10 @@ contexts:
       captures:
         1: punctuation.section.embedded.begin.svelte
         2: keyword.control.loop.svelte
-      push:
-        - match: (\b{{ident}}\b)\s*(\bas\b)\s*(\b{{ident}}\b)?((,)?\s*(\b{{ident}}\b))?(\s+([(])(\b{{ident}}\b)([)]))?
-          scope: meta.each.svelte meta.group.svelte
-          captures:
-            1: variable.other.readwrite.js
-            2: keyword.operator.word.js
-            3: variable.other.readwrite.js
-            5: keyword.operator.comma.js
-            6: variable.other.readwrite.js
-            8: punctuation.section.group.begin.js
-            9: variable.other.readwrite.js
-            10: punctuation.section.group.begin.js
-        - match: \}
-          scope: punctuation.section.embedded.end.svelte
-          pop: true
+      push: embed-scope
+      with_prototype:
+        - match: as
+          scope: keyword.operator.logical.svelte
 
     - match: (\{)(#if|\/if|:else(?:if)?)
       captures:
