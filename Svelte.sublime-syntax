@@ -1,6 +1,6 @@
 %YAML 1.2
 ---
-name: Svelte Dev
+name: Svelte
 file_extensions:
   - svlt
   - svelte

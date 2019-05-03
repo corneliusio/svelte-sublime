@@ -3,7 +3,7 @@
 ---
 !extend
 _base: HTML.yaml
-name: "Svelte Dev"
+name: Svelte
 file_extensions:
   - svlt
   - svelte
