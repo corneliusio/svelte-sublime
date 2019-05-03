@@ -1,6 +1,6 @@
 %YAML 1.2
 ---
-name: Svelte
+name: Svelte Dev
 file_extensions:
   - svlt
   - svelte
@@ -754,7 +754,14 @@ contexts:
       push: embed-scope
       with_prototype:
         - match: as
-          scope: keyword.operator.logical.svelte
+          scope: keyword.operator.word.svelte
+        - match: (,)\s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]+\b)?(?:\s+([(])(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]+\b)([)]))?
+          captures:
+            1: keyword.operator.comma.svelte
+            2: variable.other.readwrite.svelte
+            3: punctuation.section.group.begin.svelte
+            4: variable.other.readwrite.svelte
+            5: punctuation.section.group.begin.svelte
 
     - match: (\{)(#if|\/if|:else(?:if)?)
       captures:
