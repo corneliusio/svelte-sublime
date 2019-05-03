@@ -142,6 +142,7 @@ contexts: !merge
     - !script_language [ ts, source.ts ]
     - !script_language [ coffeescript, source.coffee ]
     - !script_language [ livescript, source.livescript ]
+    - !script_language [ babel, source.js, "Packages/Babel/JavaScript (Babel).sublime-syntax" ]
     - match: (?=\S)
       set:
         - script-javascript

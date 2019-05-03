@@ -939,6 +939,20 @@ contexts:
                   escape: (?i)(?=(?:-->\s*)?</script)
         - tag-generic-attribute-meta
         - tag-generic-attribute-value
+    - match: (?i)(?=text/babel(?!{unquoted_attribute_value})|\'text/babel\'|"text/babel")
+      set:
+        -   - meta_content_scope: meta.tag.script.begin.html
+            - include: script-common
+            - match: '>'
+              scope: punctuation.definition.tag.end.html
+              set:
+                - include: script-close-tag
+                - match: ''
+                  embed_scope: source.js.embedded.html
+                  embed: Packages/Babel/JavaScript (Babel).sublime-syntax
+                  escape: (?i)(?=(?:-->\s*)?</script)
+        - tag-generic-attribute-meta
+        - tag-generic-attribute-value
     - match: (?=\S)
       set:
         - script-javascript
