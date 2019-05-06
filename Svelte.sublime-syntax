@@ -747,7 +747,7 @@ contexts:
       scope: punctuation.section.embedded.begin.svelte
       push: embed-scope
 
-    - match: (\{)(#each|\/each)
+    - match: (\{)(#each|\/each)\b
       captures:
         1: punctuation.section.embedded.begin.svelte
         2: keyword.control.loop.svelte
@@ -763,13 +763,13 @@ contexts:
             4: variable.other.readwrite.svelte
             5: punctuation.section.group.begin.svelte
 
-    - match: (\{)(#if|\/if|:else(?:if)?)
+    - match: (\{)(#if|\/if|:else(?:\bif)?)\b
       captures:
         1: punctuation.section.embedded.begin.svelte
         2: keyword.control.conditional.svelte
       push: embed-scope
 
-    - match: (\{)(#await|\/await|:then|:catch)
+    - match: (\{)(#await|\/await|:then|:catch)\b
       captures:
         1: punctuation.section.embedded.begin.svelte
       scope: keyword.control.await.svelte
