@@ -735,7 +735,7 @@ contexts:
       scope: punctuation.definition.tag.end.html
       pop: true
   svelte-attributes:
-    - match: (?i)\b(on|bind|in|out|transition|class|use|let)(:)([a-z0-9_\|-]+)\b
+    - match: (?i)\b(on|bind|in|out|transition|animate|class|use|let)(:)([a-z0-9_\|-]+)\b
       captures:
         1: entity.other.attribute-name.svelte support.function.svelte
         2: punctuation.separator.svelte
@@ -747,7 +747,7 @@ contexts:
       scope: punctuation.section.embedded.begin.svelte
       push: embed-scope
 
-    - match: (\{)(#each|\/each)\b
+    - match: (\{)(#each)\b
       captures:
         1: punctuation.section.embedded.begin.svelte
         2: keyword.control.loop.svelte
@@ -763,15 +763,31 @@ contexts:
             4: variable.other.readwrite.svelte
             5: punctuation.section.group.begin.svelte
 
+    - match: (\{)(\/each)\b
+      captures:
+        1: punctuation.section.embedded.begin.svelte
+        2: keyword.control.loop.svelte
+      push: embed-scope
+
     - match: (\{)(#if|\/if|:else(?:\bif)?)\b
       captures:
         1: punctuation.section.embedded.begin.svelte
         2: keyword.control.conditional.svelte
       push: embed-scope
 
-    - match: (\{)(#await|\/await|:then|:catch)\b
+    - match: (\{)(#await)\b
       captures:
         1: punctuation.section.embedded.begin.svelte
+        2: keyword.control.await.svelte
+      push: embed-scope
+      with_prototype:
+        - match: then
+          scope: keyword.operator.word.svelte
+
+    - match: (\{)(\/await|:then|:catch)\b
+      captures:
+        1: punctuation.section.embedded.begin.svelte
+        2: keyword.control.await.svelte
       scope: keyword.control.await.svelte
       push: embed-scope
 
