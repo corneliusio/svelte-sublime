@@ -753,15 +753,15 @@ contexts:
         2: keyword.control.loop.svelte
       push: embed-scope
       with_prototype:
-        - match: as
-          scope: keyword.operator.word.svelte
-        - match: (,)\s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]+\b)?(?:\s+([(])(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]+\b)([)]))?
+        - match: (as)\s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)?\s*(,)?\s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)?(?:\s+([(])(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)([)]))?
           captures:
-            1: keyword.operator.comma.svelte
+            1: keyword.control.loop.svelte
             2: variable.other.readwrite.svelte
-            3: punctuation.section.group.begin.svelte
+            3: keyword.operator.comma.svelte
             4: variable.other.readwrite.svelte
             5: punctuation.section.group.begin.svelte
+            6: variable.other.readwrite.svelte
+            7: punctuation.section.group.begin.svelte
 
     - match: (\{)(\/each)\b
       captures:
@@ -782,7 +782,7 @@ contexts:
       push: embed-scope
       with_prototype:
         - match: then
-          scope: keyword.operator.word.svelte
+          scope: keyword.control.await.svelte
 
     - match: (\{)(\/await|:then|:catch)\b
       captures:
@@ -831,8 +831,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: style-close-tag
-                - embed_scope: source.scss.embedded.html
-                  match: ''
+                - match: ''
+                  embed_scope: source.scss.embedded.html
                   embed: scope:source.scss
                   escape: (?i)(?=(?:-->\s*)?</style)
         - tag-generic-attribute-meta
@@ -845,8 +845,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: style-close-tag
-                - embed_scope: source.sass.embedded.html
-                  match: ''
+                - match: ''
+                  embed_scope: source.sass.embedded.html
                   embed: scope:source.sass
                   escape: (?i)(?=(?:-->\s*)?</style)
         - tag-generic-attribute-meta
@@ -859,8 +859,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: style-close-tag
-                - embed_scope: source.css.less.embedded.html
-                  match: ''
+                - match: ''
+                  embed_scope: source.css.less.embedded.html
                   embed: scope:source.css.less
                   escape: (?i)(?=(?:-->\s*)?</style)
         - tag-generic-attribute-meta
@@ -873,8 +873,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: style-close-tag
-                - embed_scope: source.stylus.embedded.html
-                  match: ''
+                - match: ''
+                  embed_scope: source.stylus.embedded.html
                   embed: scope:source.stylus
                   escape: (?i)(?=(?:-->\s*)?</style)
         - tag-generic-attribute-meta
@@ -887,8 +887,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: style-close-tag
-                - embed_scope: source.postcss.embedded.html
-                  match: ''
+                - match: ''
+                  embed_scope: source.postcss.embedded.html
                   embed: scope:source.postcss
                   escape: (?i)(?=(?:-->\s*)?</style)
         - tag-generic-attribute-meta
@@ -921,8 +921,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: script-close-tag
-                - embed_scope: source.ts.embedded.html
-                  match: ''
+                - match: ''
+                  embed_scope: source.ts.embedded.html
                   embed: scope:source.ts
                   escape: (?i)(?=(?:-->\s*)?</script)
         - tag-generic-attribute-meta
@@ -935,8 +935,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: script-close-tag
-                - embed_scope: source.coffee.embedded.html
-                  match: ''
+                - match: ''
+                  embed_scope: source.coffee.embedded.html
                   embed: scope:source.coffee
                   escape: (?i)(?=(?:-->\s*)?</script)
         - tag-generic-attribute-meta
@@ -949,8 +949,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: script-close-tag
-                - embed_scope: source.livescript.embedded.html
-                  match: ''
+                - match: ''
+                  embed_scope: source.livescript.embedded.html
                   embed: scope:source.livescript
                   escape: (?i)(?=(?:-->\s*)?</script)
         - tag-generic-attribute-meta
@@ -963,8 +963,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: script-close-tag
-                - embed_scope: source.js.embedded.html
-                  match: ''
+                - match: ''
+                  embed_scope: source.js.embedded.html
                   embed: Packages/Babel/JavaScript (Babel).sublime-syntax
                   escape: (?i)(?=(?:-->\s*)?</script)
         - tag-generic-attribute-meta
