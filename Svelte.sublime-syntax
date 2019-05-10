@@ -769,7 +769,7 @@ contexts:
         2: keyword.control.loop.svelte
       push: embed-scope
 
-    - match: (\{)(#if|\/if|:else(?:\bif)?)\b
+    - match: (\{)(#if|\/if|:else(?:\s+if)?)\b
       captures:
         1: punctuation.section.embedded.begin.svelte
         2: keyword.control.conditional.svelte
@@ -831,8 +831,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: style-close-tag
-                - match: ''
-                  embed_scope: source.scss.embedded.html
+                - embed_scope: source.scss.embedded.html
+                  match: ''
                   embed: scope:source.scss
                   escape: (?i)(?=(?:-->\s*)?</style)
         - tag-generic-attribute-meta
@@ -845,8 +845,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: style-close-tag
-                - match: ''
-                  embed_scope: source.sass.embedded.html
+                - embed_scope: source.sass.embedded.html
+                  match: ''
                   embed: scope:source.sass
                   escape: (?i)(?=(?:-->\s*)?</style)
         - tag-generic-attribute-meta
@@ -859,8 +859,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: style-close-tag
-                - match: ''
-                  embed_scope: source.css.less.embedded.html
+                - embed_scope: source.css.less.embedded.html
+                  match: ''
                   embed: scope:source.css.less
                   escape: (?i)(?=(?:-->\s*)?</style)
         - tag-generic-attribute-meta
@@ -873,8 +873,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: style-close-tag
-                - match: ''
-                  embed_scope: source.stylus.embedded.html
+                - embed_scope: source.stylus.embedded.html
+                  match: ''
                   embed: scope:source.stylus
                   escape: (?i)(?=(?:-->\s*)?</style)
         - tag-generic-attribute-meta
@@ -887,8 +887,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: style-close-tag
-                - match: ''
-                  embed_scope: source.postcss.embedded.html
+                - embed_scope: source.postcss.embedded.html
+                  match: ''
                   embed: scope:source.postcss
                   escape: (?i)(?=(?:-->\s*)?</style)
         - tag-generic-attribute-meta
@@ -921,8 +921,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: script-close-tag
-                - match: ''
-                  embed_scope: source.ts.embedded.html
+                - embed_scope: source.ts.embedded.html
+                  match: ''
                   embed: scope:source.ts
                   escape: (?i)(?=(?:-->\s*)?</script)
         - tag-generic-attribute-meta
@@ -935,8 +935,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: script-close-tag
-                - match: ''
-                  embed_scope: source.coffee.embedded.html
+                - embed_scope: source.coffee.embedded.html
+                  match: ''
                   embed: scope:source.coffee
                   escape: (?i)(?=(?:-->\s*)?</script)
         - tag-generic-attribute-meta
@@ -949,8 +949,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: script-close-tag
-                - match: ''
-                  embed_scope: source.livescript.embedded.html
+                - embed_scope: source.livescript.embedded.html
+                  match: ''
                   embed: scope:source.livescript
                   escape: (?i)(?=(?:-->\s*)?</script)
         - tag-generic-attribute-meta
@@ -963,8 +963,8 @@ contexts:
               scope: punctuation.definition.tag.end.html
               set:
                 - include: script-close-tag
-                - match: ''
-                  embed_scope: source.js.embedded.html
+                - embed_scope: source.js.embedded.html
+                  match: ''
                   embed: Packages/Babel/JavaScript (Babel).sublime-syntax
                   escape: (?i)(?=(?:-->\s*)?</script)
         - tag-generic-attribute-meta

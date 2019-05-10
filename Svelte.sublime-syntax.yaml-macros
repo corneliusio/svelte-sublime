@@ -70,7 +70,7 @@ contexts: !merge
         2: keyword.control.loop.svelte
       push: embed-scope
 
-    - match: (\{)(#if|\/if|:else(?:\bif)?)\b
+    - match: (\{)(#if|\/if|:else(?:\s+if)?)\b
       captures:
         1: punctuation.section.embedded.begin.svelte
         2: keyword.control.conditional.svelte
