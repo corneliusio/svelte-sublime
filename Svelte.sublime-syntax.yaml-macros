@@ -11,6 +11,7 @@ scope: text.html.svelte
 
 contexts: !merge
   main: !prepend
+    - include: JavaScript.yaml
     - include: control
 
   tag-attributes: !prepend
@@ -54,15 +55,18 @@ contexts: !merge
         2: keyword.control.loop.svelte
       push: embed-scope
       with_prototype:
-        - match: (as)\s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)?\s*(,)?\s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)?(?:\s+([(])(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)([)]))?
+        - match: !word as
+          scope: keyword.control.loop.svelte
+        - match: (,)\s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)?
           captures:
-            1: keyword.control.loop.svelte
+            1: keyword.operator.comma.svelte
             2: variable.other.readwrite.svelte
-            3: keyword.operator.comma.svelte
-            4: variable.other.readwrite.svelte
-            5: punctuation.section.group.begin.svelte
-            6: variable.other.readwrite.svelte
-            7: punctuation.section.group.begin.svelte
+        - match: \s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)(?:\s+(\()(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)(\)))
+          captures:
+            1: variable.other.readwrite.svelte
+            2: punctuation.section.group.begin.svelte
+            3: variable.other.readwrite.svelte
+            4: punctuation.section.group.begin.svelte
 
     - match: (\{)(\/each)\b
       captures:
@@ -104,11 +108,17 @@ contexts: !merge
     - match: \{
       scope: punctuation.section.embedded.begin.svelte
       set: embed-scope
+      with_prototype:
+        - match: \$\$(restProps|props)
+          scope: variable.language.dollar.js
 
   push-interpolation:
     - match: \{
       scope: punctuation.section.embedded.begin.svelte
       push: embed-scope
+      with_prototype:
+        - match: \$\$(restProps|props)
+          scope: variable.language.dollar.js
 
   style-common: !prepend
     - include: style-lang-attribute
