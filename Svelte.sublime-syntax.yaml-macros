@@ -16,7 +16,9 @@ contexts: !merge
 
   tag-attributes: !prepend
     - include: push-interpolation
-    - include: svelte-attributes
+    - include: svelte-attributes-string
+    - include: svelte-attributes-variable
+    - include: svelte-attributes-storage
 
   entities: !prepend
     - include: push-interpolation
@@ -36,12 +38,43 @@ contexts: !merge
   tag-generic-attribute-value: !prepend
     - include: set-interpolation
 
-  svelte-attributes:
-    - match: !word (on|bind|in|out|transition|animate|class|use|let)(:)([a-z0-9_\|-]+)
+  svelte-attributes-string:
+    - match: !word (on|bind|class)(:)([A-z0-9_-]+)
+      scope: entity.other.attribute-name.svelte
       captures:
-        1: entity.other.attribute-name.svelte support.function.svelte
+        1: support.function.svelte
         2: punctuation.separator.svelte
         3: string.unquoted.svelte
+      push: tag-generic-attribute-equals
+      with_prototype:
+        - match: (\|)(([A-z0-9_-]+))?
+          scope: entity.other.attribute-name.svelte
+          captures:
+            1: punctuation.separator.svelte
+            2: support.constant.svelte
+
+  svelte-attributes-variable:
+    - match: !word (in|out|transition|animate|use)(:)([A-z0-9_-]+)
+      scope: entity.other.attribute-name.svelte
+      captures:
+        1: support.function.svelte
+        2: punctuation.separator.svelte
+        3: variable.other.readwrite.svelte
+      push: tag-generic-attribute-equals
+      with_prototype:
+        - match: (\|)(([A-z0-9_-]+))?
+          scope: entity.other.attribute-name.svelte
+          captures:
+            1: punctuation.separator.svelte
+            2: support.constant.svelte
+
+  svelte-attributes-storage:
+    - match: !word (let)(:)([A-z0-9_-]+)
+      scope: entity.other.attribute-name.svelte
+      captures:
+        1: storage.type.svelte
+        2: punctuation.separator.svelte
+        3: variable.other.readwrite.svelte
       push: tag-generic-attribute-equals
 
   control:
