@@ -11,7 +11,7 @@ Sublime Text Syntax highlighting for [Svelte 3](https://svelte.dev/) components.
 
 ---
 
-### Supported Scripts Highlighting
+### Supported Scripts
 
 ##### TypeScript
 ```html
@@ -47,7 +47,7 @@ or
 </script>
 ```
 
-### Supported Styles Highlighting
+### Supported Styles
 
 ##### Sass
 ```html
