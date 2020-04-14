@@ -9,7 +9,84 @@ Sublime Text Syntax highlighting for [Svelte 3](https://svelte.dev/) components.
 - Via Package Control: search for `Svelte`.
 - Manual: clone this repo into your Sublime `Packages` folder.
 
+---
+
+### Supported Scripts Highlighting
+
+##### TypeScript
+```html
+<script type="text/typescript">
+
+</script>
+```
+or
+```html
+<script type="text/ts">
+
+</script>
+```
+
+##### CoffeeScript
+```html
+<script type="text/coffeescript">
+
+</script>
+```
+
+##### LiveScript
+```html
+<script type="text/livescript">
+
+</script>
+```
+
+##### Babel
+```html
+<script type="text/babel">
+
+</script>
+```
+
+### Supported Styles Highlighting
+
+##### Sass
+```html
+<style type="text/sass">
+
+</style>
+```
+
+##### Sass (SCSS)
+```html
+<style type="text/scss">
+
+</style>
+```
+
+##### Less
+```html
+<style type="text/less">
+
+</style>
+```
+
+##### Stylus
+```html
+<style type="text/stylus">
+
+</style>
+```
+
+##### PostCSS
+```html
+<style type="text/postcss">
+
+</style>
+```
+
 **NOTE:** You still need to install corresponding packages for pre-processors (e.g. SASS, Typescript) to get proper syntax highlighting for them.
+
+---
 
 ### Special Thanks
 
