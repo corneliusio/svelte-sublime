@@ -1,0 +1,7 @@
+.gitattributes export-ignore
+.gitignore export-ignore
+media/ export-ignore
+HTML.yaml export-ignore
+README.md export-ignore
+macros.py export-ignore
+Svelte.sublime-syntax.yaml-macros export-ignore
