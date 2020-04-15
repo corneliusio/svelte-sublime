@@ -11,7 +11,6 @@ scope: text.html.svelte
 
 contexts: !merge
   main: !prepend
-    - include: JavaScript.yaml
     - include: control
 
   tag-attributes: !prepend
@@ -47,11 +46,7 @@ contexts: !merge
         3: string.unquoted.svelte
       push: tag-generic-attribute-equals
       with_prototype:
-        - match: (\|)(([A-z0-9_-]+))?
-          scope: entity.other.attribute-name.svelte
-          captures:
-            1: punctuation.separator.svelte
-            2: support.constant.svelte
+        - include: svelte-attribute-modifiers
 
   svelte-attributes-variable:
     - match: !word (in|out|transition|animate|use)(:)([A-z0-9_-]+)
@@ -62,11 +57,7 @@ contexts: !merge
         3: variable.other.readwrite.svelte
       push: tag-generic-attribute-equals
       with_prototype:
-        - match: (\|)(([A-z0-9_-]+))?
-          scope: entity.other.attribute-name.svelte
-          captures:
-            1: punctuation.separator.svelte
-            2: support.constant.svelte
+        - include: svelte-attribute-modifiers
 
   svelte-attributes-storage:
     - match: !word (let)(:)([A-z0-9_-]+)
@@ -76,6 +67,13 @@ contexts: !merge
         2: punctuation.separator.svelte
         3: variable.other.readwrite.svelte
       push: tag-generic-attribute-equals
+
+  svelte-attribute-modifiers:
+    - match: (\|)(([A-z0-9_-]+))?
+      scope: entity.other.attribute-name.svelte
+      captures:
+        1: punctuation.separator.svelte
+        2: support.constant.svelte
 
   control:
     - match: \{@(html|debug)
@@ -119,7 +117,7 @@ contexts: !merge
         2: keyword.control.await.svelte
       push: embed-scope
       with_prototype:
-        - match: then
+        - match: !word then
           scope: keyword.control.await.svelte
 
     - match: (\{)(\/await|:then|:catch)\b
@@ -135,7 +133,7 @@ contexts: !merge
     - match: \}
       scope: punctuation.section.embedded.end.svelte
       pop: true
-    - include: scope:source.js
+    - include: Packages/JavaScript/JavaScript.sublime-syntax
 
   set-interpolation:
     - match: \{
