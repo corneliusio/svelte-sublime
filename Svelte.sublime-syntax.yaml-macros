@@ -129,7 +129,7 @@ contexts: !merge
 
   embed-scope:
     - meta_scope: meta.embedded.block.svelte
-    - meta_content_scope: source.svelte
+    - meta_content_scope: source.js.svelte
     - match: \}
       scope: punctuation.section.embedded.end.svelte
       pop: true
