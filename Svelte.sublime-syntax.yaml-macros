@@ -88,16 +88,13 @@ contexts: !merge
       with_prototype:
         - match: !word as
           scope: keyword.control.loop.svelte
+        - match: (\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)\s+
+          captures:
+            1: variable.other.readwrite.svelte
         - match: (,)\s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)?
           captures:
             1: keyword.operator.comma.svelte
             2: variable.other.readwrite.svelte
-        - match: \s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)(?:\s+(\()(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)(\)))
-          captures:
-            1: variable.other.readwrite.svelte
-            2: punctuation.section.group.begin.svelte
-            3: variable.other.readwrite.svelte
-            4: punctuation.section.group.begin.svelte
 
     - match: (\{)(\/each)\b
       captures:
@@ -125,6 +122,12 @@ contexts: !merge
         1: punctuation.section.embedded.begin.svelte
         2: keyword.control.await.svelte
       scope: keyword.control.await.svelte
+      push: embed-scope
+
+    - match: (\{)(#key|\/key)\b
+      captures:
+        1: punctuation.section.embedded.begin.svelte
+        2: keyword.other.svelte
       push: embed-scope
 
   embed-scope:
@@ -163,16 +166,39 @@ contexts: !merge
           scope: punctuation.separator.key-value.html
           set:
             - meta_content_scope: meta.tag.style.begin.html meta.attribute-with-value.html
-            - include: style-lang-decider
+            - include: style-lang-decider-type
+        - match: (?=\S)
+          set: style-css
+    - match: !word lang
+      scope: meta.attribute-with-value.html entity.other.attribute-name.html
+      set:
+        - meta_content_scope: meta.tag.style.begin.html meta.attribute-with-value.html
+        - match: =
+          scope: punctuation.separator.key-value.html
+          set:
+            - meta_content_scope: meta.tag.style.begin.html meta.attribute-with-value.html
+            - include: style-lang-decider-lang
         - match: (?=\S)
           set: style-css
 
-  style-lang-decider:
-    - !style_language [ scss, source.scss ]
-    - !style_language [ sass, source.sass ]
-    - !style_language [ less, source.css.less ]
-    - !style_language [ stylus, source.stylus ]
-    - !style_language [ postcss, source.postcss ]
+  style-lang-decider-type:
+    - !style_language_type [ scss, source.scss ]
+    - !style_language_type [ sass, source.sass ]
+    - !style_language_type [ less, source.css.less ]
+    - !style_language_type [ stylus, source.stylus ]
+    - !style_language_type [ postcss, source.postcss ]
+    - match: (?=\S)
+      set:
+        - style-css
+        - tag-generic-attribute-meta
+        - tag-generic-attribute-value
+
+  style-lang-decider-lang:
+    - !style_language_lang [ scss, source.scss ]
+    - !style_language_lang [ sass, source.sass ]
+    - !style_language_lang [ less, source.css.less ]
+    - !style_language_lang [ stylus, source.stylus ]
+    - !style_language_lang [ postcss, source.postcss ]
     - match: (?=\S)
       set:
         - style-css
@@ -191,15 +217,37 @@ contexts: !merge
           scope: punctuation.separator.key-value.html
           set:
             - meta_content_scope: meta.tag.script.begin.html meta.attribute-with-value.html
-            - include: script-lang-decider
+            - include: script-lang-decider-type
+        - match: (?=\S)
+          set: script-javascript
+    - match: !word lang
+      scope: meta.attribute-with-value.html entity.other.attribute-name.html
+      set:
+        - meta_content_scope: meta.tag.script.begin.html meta.attribute-with-value.html
+        - match: =
+          scope: punctuation.separator.key-value.html
+          set:
+            - meta_content_scope: meta.tag.script.begin.html meta.attribute-with-value.html
+            - include: script-lang-decider-lang
         - match: (?=\S)
           set: script-javascript
 
-  script-lang-decider:
-    - !script_language [ (?:ts|typescript), source.ts ]
-    - !script_language [ coffeescript, source.coffee ]
-    - !script_language [ livescript, source.livescript ]
-    - !script_language [ babel, source.js, "Packages/Babel/JavaScript (Babel).sublime-syntax" ]
+  script-lang-decider-type:
+    - !script_language_type [ (?:ts|typescript), source.ts ]
+    - !script_language_type [ coffeescript, source.coffee ]
+    - !script_language_type [ livescript, source.livescript ]
+    - !script_language_type [ babel, source.js, "Packages/Babel/JavaScript (Babel).sublime-syntax" ]
+    - match: (?=\S)
+      set:
+        - script-javascript
+        - tag-generic-attribute-meta
+        - tag-generic-attribute-value
+
+  script-lang-decider-lang:
+    - !script_language_lang [ (?:ts|typescript), source.ts ]
+    - !script_language_lang [ coffeescript, source.coffee ]
+    - !script_language_lang [ livescript, source.livescript ]
+    - !script_language_lang [ babel, source.js, "Packages/Babel/JavaScript (Babel).sublime-syntax" ]
     - match: (?=\S)
       set:
         - script-javascript
