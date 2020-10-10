@@ -16,25 +16,35 @@ Sublime Text Syntax highlighting for [Svelte 3](https://svelte.dev/) components.
 ##### TypeScript
 ```html
 <script type="text/typescript"></script>
+<!-- or -->
+<script lang="typescript"></script>
 ```
 or
 ```html
 <script type="text/ts"></script>
+<!-- or -->
+<script lang="ts"></script>
 ```
 
 ##### CoffeeScript
 ```html
 <script type="text/coffeescript"></script>
+<!-- or -->
+<script lang="coffeescript"></script>
 ```
 
 ##### LiveScript
 ```html
 <script type="text/livescript"></script>
+<!-- or -->
+<script lang="livescript"></script>
 ```
 
 ##### Babel
 ```html
 <script type="text/babel"></script>
+<!-- or -->
+<script lang="babel"></script>
 ```
 
 ### Supported Styles
@@ -42,26 +52,36 @@ or
 ##### Sass
 ```html
 <style type="text/sass"></style>
+<!-- or -->
+<style lang="sass"></style>
 ```
 
 ##### Sass (SCSS)
 ```html
 <style type="text/scss"></style>
+<!-- or -->
+<style lang="scss"></style>
 ```
 
 ##### Less
 ```html
 <style type="text/less"></style>
+<!-- or -->
+<style lang="less"></style>
 ```
 
 ##### Stylus
 ```html
 <style type="text/stylus"></style>
+<!-- or -->
+<style lang="stylus"></style>
 ```
 
 ##### PostCSS
 ```html
 <style type="text/postcss"></style>
+<!-- or -->
+<style lang="postcss"></style>
 ```
 
 **NOTE:** You still need to install corresponding packages for pre-processors (e.g. SASS, Typescript) to get proper syntax highlighting for them.
