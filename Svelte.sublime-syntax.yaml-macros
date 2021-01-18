@@ -184,7 +184,7 @@ contexts: !merge
   style-lang-decider-type:
     - !style_language_type [ scss, source.scss ]
     - !style_language_type [ sass, source.sass ]
-    - !style_language_type [ less, source.css.less ]
+    - !style_language_type [ less, source.less ]
     - !style_language_type [ stylus, source.stylus ]
     - !style_language_type [ postcss, source.postcss ]
     - match: (?=\S)
@@ -196,7 +196,7 @@ contexts: !merge
   style-lang-decider-lang:
     - !style_language_lang [ scss, source.scss ]
     - !style_language_lang [ sass, source.sass ]
-    - !style_language_lang [ less, source.css.less ]
+    - !style_language_lang [ less, source.less ]
     - !style_language_lang [ stylus, source.stylus ]
     - !style_language_lang [ postcss, source.postcss ]
     - match: (?=\S)
