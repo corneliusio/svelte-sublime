@@ -37,6 +37,11 @@ variables:
       button|datalist|input|label|legend|meter|optgroup|option|output|progress|select|template|textarea
     ){{tag_name_break}}
 
+  component_tag_name: |-
+    (?x:
+      [A-Z]+[a-zA-Z]+|[a-zA-Z]+\:[a-zA-Z]+
+    ){{tag_name_break}}
+
   javascript_mime_type: |-
     (?ix:
       # https://mimesniff.spec.whatwg.org/#javascript-mime-type
@@ -729,6 +734,14 @@ contexts:
         2: entity.name.tag.inline.any.html
       push:
         - meta_scope: meta.tag.inline.any.html
+        - include: tag-end-maybe-self-closing
+        - include: tag-attributes
+    - match: (</?)({{component_tag_name}})
+      captures:
+        1: punctuation.definition.tag.begin.html
+        2: entity.name.tag.inline.form.html
+      push:
+        - meta_scope: meta.tag.component.form.html
         - include: tag-end-maybe-self-closing
         - include: tag-attributes
     - match: (</?)({{form_tag_name}})
