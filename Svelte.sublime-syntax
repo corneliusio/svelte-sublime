@@ -574,7 +574,11 @@ contexts:
     - match: \}
       scope: punctuation.section.embedded.end.svelte
       pop: true
-    - include: Packages/JavaScript/JavaScript.sublime-syntax
+    - match: ''
+      push: scope:source.js
+      with_prototype:
+        - match: (?=\}[^\}])
+          pop: true
 
   script-lang-decider-lang:
     - match: (?i)(?=(?:ts|typescript)(?!{unquoted_attribute_value})|\'(?:ts|typescript)\'|"(?:ts|typescript)")
