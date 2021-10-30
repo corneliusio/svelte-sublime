@@ -136,7 +136,7 @@ contexts: !merge
     - match: \}
       scope: punctuation.section.embedded.end.svelte
       pop: true
-    - include: Packages/JavaScript/JavaScript.sublime-syntax
+    - include: Packages/JavaScript/JavaScript.sublime-syntax#script
 
   set-interpolation:
     - match: \{
