@@ -131,20 +131,41 @@ contexts: !merge
       push: embed-scope
 
   embed-scope:
-    - meta_scope: meta.embedded.block.svelte
-    - meta_content_scope: source.js.svelte
-    - match: \}
-      scope: punctuation.section.embedded.end.svelte
+    - match: ''
+      embed: scope:source.js
+      embed_scope: source.js.embedded.svelte
+      escape: '\}'
+      escape_captures:
+        0: punctuation.section.embedded.end.svelte
       pop: true
-    - include: Packages/JavaScript/JavaScript.sublime-syntax
+
+    # - meta_scope: meta.embedded.block.svelte
+    # - meta_content_scope: source.js.svelte
+    # - match: \}
+    #   scope: punctuation.section.embedded.end.svelte
+    #   pop: true
+    # - include: Packages/JavaScript/JavaScript.sublime-syntax
 
   set-interpolation:
-    - match: \{
-      scope: punctuation.section.embedded.begin.svelte
-      set: embed-scope
-      with_prototype:
-        - match: \$\$(restProps|props)
-          scope: variable.language.dollar.js
+    - match: '(?=\{)'
+      set:
+        - meta_scope: meta.embedded.block.svelte
+        - match: '\{'
+          scope: punctuation.section.embedded.begin.svelte
+          embed: scope:source.js
+          embed_scope: source.js.embedded.svelte
+          escape: '\}'
+          escape_captures:
+            0: punctuation.section.embedded.end.svelte
+        - match: ''
+          pop: true
+
+    # - match: \{
+    #   scope: punctuation.section.embedded.begin.svelte
+    #   set: embed-scope
+    #   with_prototype:
+    #     - match: \$\$(restProps|props)
+    #       scope: variable.language.dollar.js
 
   push-interpolation:
     - match: \{
