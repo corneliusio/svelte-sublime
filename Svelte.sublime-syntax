@@ -815,6 +815,14 @@ contexts:
         - meta_scope: meta.tag.structure.any.html
         - include: tag-end
         - include: tag-attributes
+    - match: (</?)([A-Z]\w+)
+      captures:
+        1: punctuation.definition.tag.begin.svelte
+        2: entity.name.component.svelte
+      push:
+        - meta_scope: meta.tag.block.any.html
+        - include: tag-end-maybe-self-closing
+        - include: tag-attributes
     - match: (</?)({{block_tag_name}})
       captures:
         1: punctuation.definition.tag.begin.html
