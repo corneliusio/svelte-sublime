@@ -38,7 +38,7 @@ contexts: !merge
     - include: set-interpolation
 
   svelte-attributes-string:
-    - match: !word (on|bind|class)(:)([A-z0-9_-]+)
+    - match: !word (on|bind|class|style)(:)([A-z0-9_-]+)
       scope: entity.other.attribute-name.svelte
       captures:
         1: support.function.svelte
@@ -76,7 +76,7 @@ contexts: !merge
         2: support.constant.svelte
 
   control:
-    - match: \{@(html|debug)
+    - match: \{@(html|debug|const)
       scope: punctuation.section.embedded.begin.svelte
       push: embed-scope
 

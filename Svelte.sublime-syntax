@@ -554,7 +554,7 @@ contexts:
         - include: svelte-attribute-modifiers
 
   svelte-attributes-string:
-    - match: (?i)\b(on|bind|class)(:)([A-z0-9_-]+)\b
+    - match: (?i)\b(on|bind|class|style)(:)([A-z0-9_-]+)\b
       scope: entity.other.attribute-name.svelte
       captures:
         1: support.function.svelte
@@ -581,7 +581,7 @@ contexts:
         - include: script-close-tag
 
   control:
-    - match: \{@(html|debug)
+    - match: \{@(html|debug|const)
       scope: punctuation.section.embedded.begin.svelte
       push: embed-scope
 
