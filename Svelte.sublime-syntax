@@ -659,14 +659,6 @@ contexts:
           escape: (?i)(?=(?:-->\s*)?</style)
 
   tag-custom-name:
-    - meta_content_scope: entity.name.tag.custom.foobar
-    - match: '{{tag_name_break}}'
-      pop: true
-    - match: '{{custom_element_char}}+'
-        # no scope
-    - match: '{{tag_name_char}}'
-      scope: invalid.illegal.custom-tag-name.foobar
-
     - meta_content_scope: entity.name.tag.custom.html
     - match: '{{tag_name_break}}'
       pop: true
@@ -1143,17 +1135,17 @@ variables:
   tag_name: '[A-Za-z]{{tag_name_char}}*'
 
   block_tag_name: |-
-    (?ix:
+    (?x:
       address|applet|article|aside|blockquote|center|dd|dir|div|dl|dt|figcaption|figure|footer|frame|frameset|h1|h2|h3|h4|h5|h6|header|iframe|menu|nav|noframes|object|ol|p|pre|section|ul
     ){{tag_name_break}}
 
   inline_tag_name: |-
-    (?ix:
+    (?x:
       abbr|acronym|area|audio|b|base|basefont|bdi|bdo|big|br|canvas|caption|cite|code|del|details|dfn|dialog|em|font|head|html|i|img|ins|isindex|kbd|li|link|map|mark|menu|menuitem|meta|noscript|param|picture|q|rp|rt|rtc|ruby|s|samp|script|small|source|span|strike|strong|style|sub|summary|sup|time|title|track|tt|u|var|video|wbr
     ){{tag_name_break}}
 
   form_tag_name: |-
-    (?ix:
+    (?x:
       button|datalist|input|label|legend|meter|optgroup|option|output|progress|select|template|textarea
     ){{tag_name_break}}
 
