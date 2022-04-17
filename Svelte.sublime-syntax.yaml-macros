@@ -143,7 +143,7 @@ contexts: !merge
       scope: punctuation.section.embedded.begin.svelte
       set: embed-scope
       with_prototype:
-        - match: \$\$(restProps|props)
+        - match: \$\$(restProps|props|slots)
           scope: variable.language.dollar.js
 
   push-interpolation:
