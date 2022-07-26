@@ -12,6 +12,7 @@ scope: text.html.svelte
 contexts: !merge
   main: !prepend
     - include: control
+    - include: svelte-component-tag
 
   tag-attributes: !prepend
     - include: push-interpolation
@@ -36,6 +37,16 @@ contexts: !merge
 
   tag-generic-attribute-value: !prepend
     - include: set-interpolation
+
+  svelte-component-tag:
+    - match: (</?)((?x:[A-Z]+[a-zA-Z]+|[a-zA-Z]+\:[a-zA-Z]+){{tag_name_break}})
+      captures:
+        1: punctuation.definition.tag.begin.html
+        2: entity.name.tag.inline.form.html
+      push:
+        - meta_scope: meta.tag.component.any.html
+        - include: tag-end-maybe-self-closing
+        - include: tag-attributes
 
   svelte-attributes-string:
     - match: !word (on|bind|class|style)(:)([A-z0-9_-]+)
