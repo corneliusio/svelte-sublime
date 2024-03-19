@@ -1,6 +1,6 @@
 # Svelte Syntax Highlighting
 
-Sublime Text Syntax highlighting for [Svelte 3](https://svelte.dev/) components.
+Sublime Text Syntax highlighting for [Svelte 3 / 4 / 5](https://svelte.dev/) components.
 
 <img src="media/hello-world-3.png">
 

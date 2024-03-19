@@ -617,6 +617,28 @@ contexts:
         2: keyword.control.loop.svelte
       push: embed-scope
 
+    - match: (\{)(#snippet)\b
+      captures:
+        1: punctuation.section.embedded.begin.svelte
+        2: keyword.control.loop.svelte
+      push: embed-scope
+      with_prototype:
+        - match: (?i)\bas\b
+          scope: keyword.control.loop.svelte
+        - match: (\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)\s+
+          captures:
+            1: variable.other.readwrite.svelte
+        - match: (,)\s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)?
+          captures:
+            1: keyword.operator.comma.svelte
+            2: variable.other.readwrite.svelte
+
+    - match: (\{)(\/snippet)\b
+      captures:
+        1: punctuation.section.embedded.begin.svelte
+        2: keyword.control.loop.svelte
+      push: embed-scope
+
     - match: (\{)(#if|\/if|:else(?:\s+if)?)\b
       captures:
         1: punctuation.section.embedded.begin.svelte
