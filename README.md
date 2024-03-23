@@ -1,8 +1,8 @@
 # Svelte Syntax Highlighting
 
-Sublime Text Syntax highlighting for [Svelte 3 / 4 / 5](https://svelte.dev/) components.
+Sublime Text Syntax highlighting for [Svelte](https://svelte.dev/) components.
 
-<img src="media/hello-world-3.png">
+<img src="media/hello-world.png">
 
 ### Install
 
@@ -14,74 +14,85 @@ Sublime Text Syntax highlighting for [Svelte 3 / 4 / 5](https://svelte.dev/) com
 ### Supported Scripts
 
 ##### TypeScript
+
 ```html
-<script type="text/typescript"></script>
-<!-- or -->
 <script lang="typescript"></script>
-```
-or
-```html
-<script type="text/ts"></script>
 <!-- or -->
+<script type="text/typescript"></script>
+```
+
+or
+
+```html
 <script lang="ts"></script>
+<!-- or -->
+<script type="text/ts"></script>
 ```
 
 ##### CoffeeScript
+
 ```html
-<script type="text/coffeescript"></script>
-<!-- or -->
 <script lang="coffeescript"></script>
+<!-- or -->
+<script type="text/coffeescript"></script>
 ```
 
 ##### LiveScript
+
 ```html
-<script type="text/livescript"></script>
-<!-- or -->
 <script lang="livescript"></script>
+<!-- or -->
+<script type="text/livescript"></script>
 ```
 
 ##### Babel
+
 ```html
-<script type="text/babel"></script>
-<!-- or -->
 <script lang="babel"></script>
+<!-- or -->
+<script type="text/babel"></script>
 ```
 
 ### Supported Styles
 
 ##### Sass
+
 ```html
-<style type="text/sass"></style>
-<!-- or -->
 <style lang="sass"></style>
+<!-- or -->
+<style type="text/sass"></style>
 ```
 
 ##### Sass (SCSS)
+
 ```html
-<style type="text/scss"></style>
-<!-- or -->
 <style lang="scss"></style>
+<!-- or -->
+<style type="text/scss"></style>
 ```
 
 ##### Less
+
 ```html
-<style type="text/less"></style>
-<!-- or -->
 <style lang="less"></style>
+<!-- or -->
+<style type="text/less"></style>
 ```
 
 ##### Stylus
+
 ```html
-<style type="text/stylus"></style>
-<!-- or -->
 <style lang="stylus"></style>
+<!-- or -->
+<style type="text/stylus"></style>
 ```
 
 ##### PostCSS
+
 ```html
-<style type="text/postcss"></style>
-<!-- or -->
 <style lang="postcss"></style>
+<!-- or -->
+<style type="text/postcss"></style>
 ```
 
 **NOTE:** You still need to install corresponding packages for pre-processors (e.g. SASS, Typescript) to get proper syntax highlighting for them.
@@ -90,7 +101,7 @@ or
 
 ### Special Thanks
 
-Huge thanks to the Vue.js folks for their [Vue Syntax Highlight](https://github.com/vuejs/vue-syntax-highlight/) package from which a *ton* of solutions for this package came.
+Huge thanks to the Vue.js folks for their [Vue Syntax Highlight](https://github.com/vuejs/vue-syntax-highlight/) package from which a _ton_ of solutions for this package came.
 
 And, obviously, the biggest thanks to Rich Harris for making something as awesome as [Svelte](https://svelte.dev/).
 
