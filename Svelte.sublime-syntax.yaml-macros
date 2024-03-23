@@ -113,6 +113,28 @@ contexts: !merge
         2: keyword.control.loop.svelte
       push: embed-scope
 
+    - match: (\{)(#snippet)\b
+      captures:
+        1: punctuation.section.embedded.begin.svelte
+        2: keyword.control.loop.svelte
+      push: embed-scope
+      with_prototype:
+        - match: (?i)\bas\b
+          scope: keyword.control.loop.svelte
+        - match: (\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)\s+
+          captures:
+            1: variable.other.readwrite.svelte
+        - match: (,)\s*(\b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b)?
+          captures:
+            1: keyword.operator.comma.svelte
+            2: variable.other.readwrite.svelte
+
+    - match: (\{)(\/snippet)\b
+      captures:
+        1: punctuation.section.embedded.begin.svelte
+        2: keyword.control.loop.svelte
+      push: embed-scope
+
     - match: (\{)(#if|\/if|:else(?:\s+if)?)\b
       captures:
         1: punctuation.section.embedded.begin.svelte
@@ -193,11 +215,11 @@ contexts: !merge
           set: style-css
 
   style-lang-decider-type:
-    - !style_language_type [ scss, source.scss ]
-    - !style_language_type [ sass, source.sass ]
-    - !style_language_type [ less, source.less ]
-    - !style_language_type [ stylus, source.stylus ]
-    - !style_language_type [ postcss, source.postcss ]
+    - !style_language_type [scss, source.scss]
+    - !style_language_type [sass, source.sass]
+    - !style_language_type [less, source.less]
+    - !style_language_type [stylus, source.stylus]
+    - !style_language_type [postcss, source.postcss]
     - match: (?=\S)
       set:
         - style-css
@@ -205,11 +227,11 @@ contexts: !merge
         - tag-generic-attribute-value
 
   style-lang-decider-lang:
-    - !style_language_lang [ scss, source.scss ]
-    - !style_language_lang [ sass, source.sass ]
-    - !style_language_lang [ less, source.less ]
-    - !style_language_lang [ stylus, source.stylus ]
-    - !style_language_lang [ postcss, source.postcss ]
+    - !style_language_lang [scss, source.scss]
+    - !style_language_lang [sass, source.sass]
+    - !style_language_lang [less, source.less]
+    - !style_language_lang [stylus, source.stylus]
+    - !style_language_lang [postcss, source.postcss]
     - match: (?=\S)
       set:
         - style-css
@@ -244,10 +266,14 @@ contexts: !merge
           set: script-javascript
 
   script-lang-decider-type:
-    - !script_language_type [ (?:ts|typescript), source.ts ]
-    - !script_language_type [ coffeescript, source.coffee ]
-    - !script_language_type [ livescript, source.livescript ]
-    - !script_language_type [ babel, source.js, "Packages/Babel/JavaScript (Babel).sublime-syntax" ]
+    - !script_language_type [(?:ts|typescript), source.ts]
+    - !script_language_type [coffeescript, source.coffee]
+    - !script_language_type [livescript, source.livescript]
+    - !script_language_type [
+        babel,
+        source.js,
+        "Packages/Babel/JavaScript (Babel).sublime-syntax",
+      ]
     - match: (?=\S)
       set:
         - script-javascript
@@ -255,10 +281,14 @@ contexts: !merge
         - tag-generic-attribute-value
 
   script-lang-decider-lang:
-    - !script_language_lang [ (?:ts|typescript), source.ts ]
-    - !script_language_lang [ coffeescript, source.coffee ]
-    - !script_language_lang [ livescript, source.livescript ]
-    - !script_language_lang [ babel, source.js, "Packages/Babel/JavaScript (Babel).sublime-syntax" ]
+    - !script_language_lang [(?:ts|typescript), source.ts]
+    - !script_language_lang [coffeescript, source.coffee]
+    - !script_language_lang [livescript, source.livescript]
+    - !script_language_lang [
+        babel,
+        source.js,
+        "Packages/Babel/JavaScript (Babel).sublime-syntax",
+      ]
     - match: (?=\S)
       set:
         - script-javascript
