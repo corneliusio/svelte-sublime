@@ -47,7 +47,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: ${{ env.package_name }}
-          path: Svelte
       - name: Checkout Less (dependency)
         uses: actions/checkout@v4
         with:
