@@ -1,0 +1,176 @@
+| SYNTAX TEST "Packages/Svelte/MDSVEX.sublime-syntax"
+
+# The { title } text
+|^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown
+| ^^^^^^^^^^^^^^^^^^ entity.name.section.markdown
+|     ^^^^^^^^^ meta.embedded.block.svelte
+|     ^ punctuation.section.embedded.begin.svelte
+|      ^^^^^^^ source.js.embedded.svelte
+|       ^^^^^ variable.other.readwrite.js
+|             ^ punctuation.section.embedded.end.svelte
+
+# The <Component title={ title }/> title
+|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ entity.name.section.markdown
+|     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.tag.component.html
+|     ^ punctuation.definition.tag.begin.html
+|      ^^^^^^^^^ entity.name.tag.component.svelte
+|                ^^^^^^^^^^^^^^^ meta.attribute-with-value.html
+|                ^^^^^ entity.other.attribute-name.html
+|                     ^ punctuation.separator.key-value.html
+|                      ^^^^^^^^^ meta.string.html meta.embedded.block.svelte
+|                      ^ punctuation.section.embedded.begin.svelte
+|                       ^^^^^^^ source.js.embedded.svelte
+|                        ^^^^^ variable.other.readwrite.js
+|                              ^ punctuation.section.embedded.end.svelte
+|                               ^^ punctuation.definition.tag.end.html
+
+    Not a indented code block!
+|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.paragraph.markdown
+
+    **inlined** (like this:<Count count="{number}"/>).
+|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.paragraph.markdown
+|   ^^^^^^^^^^^ markup.bold.markdown
+|   ^^ punctuation.definition.bold.begin.markdown
+|            ^^ punctuation.definition.bold.end.markdown
+|                          ^^^^^^^^^^^^^^^^^^^^^^^^^ meta.tag.component.html
+|                          ^ punctuation.definition.tag.begin.html
+|                           ^^^^^ entity.name.tag.component.svelte
+|                                 ^^^^^^^^^^^^^^^^ meta.attribute-with-value.html
+|                                 ^^^^^ entity.other.attribute-name.html
+|                                      ^ punctuation.separator.key-value.html
+|                                       ^^^^^^^^^^ meta.string.html
+|                                       ^ string.quoted.double.html punctuation.definition.string.begin.html
+|                                        ^^^^^^^^ meta.embedded.block.svelte
+|                                        ^ punctuation.section.embedded.begin.svelte
+|                                         ^^^^^^ source.js.embedded.svelte variable.other.readwrite.js
+|                                               ^ punctuation.section.embedded.end.svelte
+|                                                ^ string.quoted.double.html punctuation.definition.string.end.html
+|                                                 ^^ punctuation.definition.tag.end.html
+
+    {#each texts as text}
+|^^^^^^^^^^^^^^^^^^^^^^^^^ meta.paragraph.markdown
+|   ^^^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+|   ^ punctuation.section.embedded.begin.svelte
+|    ^^^^^^^^^^^^^^^^^^^ source.js.embedded.svelte
+|    ^^^^^ keyword.control.loop.each.svelte
+|          ^^^^^ variable.other.readwrite.js
+|                ^^ keyword.operator.assignment.as.svelte
+|                   ^^^^ variable.other.readwrite.js
+|                       ^ punctuation.section.embedded.end.svelte
+    {text}
+|^^^^^^^^^^ meta.paragraph.markdown
+|   ^^^^^^ meta.embedded.block.svelte
+|   ^ punctuation.section.embedded.begin.svelte
+|    ^^^^ source.js.embedded.svelte variable.other.readwrite.js
+|        ^ punctuation.section.embedded.end.svelte
+    {/each}
+|^^^^^^^^^^^ meta.paragraph.markdown
+|   ^^^^^^^ meta.embedded.block.svelte
+|   ^ punctuation.section.embedded.begin.svelte
+|    ^^^^^ source.js.embedded.svelte keyword.control.loop.end.svelte
+|         ^ punctuation.section.embedded.end.svelte
+
+- List {#if foo} { item } {/if} text
+|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ markup.list.unnumbered.markdown
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.paragraph.list.markdown
+|      ^^^^^^^^^ meta.embedded.block.svelte
+|      ^ punctuation.section.embedded.begin.svelte
+|       ^^^^^^^ source.js.embedded.svelte
+|       ^^^ keyword.control.conditional.if.svelte
+|           ^^^ variable.other.readwrite.js
+|              ^ punctuation.section.embedded.end.svelte
+|                ^^^^^^^^ meta.embedded.block.svelte
+|                ^ punctuation.section.embedded.begin.svelte
+|                 ^^^^^^ source.js.embedded.svelte
+|                  ^^^^ variable.other.readwrite.js
+|                       ^ punctuation.section.embedded.end.svelte
+|                         ^^^^^ meta.embedded.block.svelte
+|                         ^ punctuation.section.embedded.begin.svelte
+|                          ^^^ source.js.embedded.svelte keyword.control.conditional.end.svelte
+|                             ^ punctuation.section.embedded.end.svelte
+
+> # The <Heading title={ title } />
+|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ markup.quote.markdown
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown
+| ^ punctuation.definition.heading.begin.markdown
+|   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ entity.name.section.markdown
+|       ^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.tag.component.html
+|       ^ punctuation.definition.tag.begin.html
+|        ^^^^^^^ entity.name.tag.component.svelte
+|                ^^^^^^^^^^^^^^^ meta.attribute-with-value.html
+|                ^^^^^ entity.other.attribute-name.html
+|                     ^ punctuation.separator.key-value.html
+|                      ^^^^^^^^^ meta.string.html meta.embedded.block.svelte
+|                      ^ punctuation.section.embedded.begin.svelte
+|                       ^^^^^^^ source.js.embedded.svelte
+|                        ^^^^^ variable.other.readwrite.js
+|                              ^ punctuation.section.embedded.end.svelte
+|                                ^^ punctuation.definition.tag.end.html
+|                                  ^ meta.whitespace.newline.markdown
+> {#each texts as text}
+| ^^^^^^^^^^^^^^^^^^^^^^ markup.quote.markdown markup.paragraph.markdown
+| ^^^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+| ^ punctuation.section.embedded.begin.svelte
+|  ^^^^^^^^^^^^^^^^^^^ source.js.embedded.svelte
+|  ^^^^^ keyword.control.loop.each.svelte
+|        ^^^^^ variable.other.readwrite.js
+|              ^^ keyword.operator.assignment.as.svelte
+|                 ^^^^ variable.other.readwrite.js
+|                     ^ punctuation.section.embedded.end.svelte
+>   { text }
+|^^^^^^^^^^^ markup.quote.markdown markup.paragraph.markdown
+|   ^^^^^^^^ meta.embedded.block.svelte
+|   ^ punctuation.section.embedded.begin.svelte
+|    ^^^^^^ source.js.embedded.svelte
+|     ^^^^ variable.other.readwrite.js
+|          ^ punctuation.section.embedded.end.svelte
+>  {/each}
+|^^^^^^^^^^ markup.quote.markdown markup.paragraph.markdown
+|  ^^^^^^^ meta.embedded.block.svelte
+|  ^ punctuation.section.embedded.begin.svelte
+|   ^^^^^ source.js.embedded.svelte keyword.control.loop.end.svelte
+|        ^ punctuation.section.embedded.end.svelte
+
+<ul>
+| <- meta.disable-markdown meta.tag punctuation.definition.tag.begin.html
+|^^^^ meta.disable-markdown
+|^^^ meta.tag
+|^^ entity.name.tag
+|  ^ punctuation.definition.tag.end.html
+{#each list as item}
+| <- meta.disable-markdown meta.embedded.block.svelte punctuation.section.embedded.begin.svelte
+|^^^^^^^^^^^^^^^^^^^^ meta.disable-markdown
+|^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+|^^^^^^^^^^^^^^^^^^ source.js.embedded.svelte
+|^^^^^ keyword.control.loop.each.svelte
+|      ^^^^ variable.other.readwrite.js
+|           ^^ keyword.operator.assignment.as.svelte
+|              ^^^^ variable.other.readwrite.js
+|                  ^ punctuation.section.embedded.end.svelte
+  <li>{item}</li>
+|^^^^^^^^^^^^^^^^^ meta.disable-markdown
+| ^^^^ meta.tag
+| ^ punctuation.definition.tag.begin.html
+|  ^^ entity.name.tag
+|    ^ punctuation.definition.tag.end.html
+|     ^^^^^^ meta.embedded.block.svelte
+|     ^ punctuation.section.embedded.begin.svelte
+|      ^^^^ source.js.embedded.svelte variable.other.readwrite.js
+|          ^ punctuation.section.embedded.end.svelte
+|           ^^^^^ meta.tag
+|           ^^ punctuation.definition.tag.begin.html
+|             ^^ entity.name.tag
+|               ^ punctuation.definition.tag.end.html
+{/each}
+| <- meta.disable-markdown meta.embedded.block.svelte punctuation.section.embedded.begin.svelte
+|^^^^^^^ meta.disable-markdown
+|^^^^^^ meta.embedded.block.svelte
+|^^^^^ source.js.embedded.svelte keyword.control.loop.end.svelte
+|     ^ punctuation.section.embedded.end.svelte
+</ul>
+| <- meta.disable-markdown meta.tag punctuation.definition.tag.begin.html
+|^^^^ meta.disable-markdown meta.tag
+|^ punctuation.definition.tag.begin.html
+| ^^ entity.name.tag
+|   ^ punctuation.definition.tag.end.html
