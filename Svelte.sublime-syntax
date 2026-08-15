@@ -13,7 +13,7 @@ variables:
 
   # script mimetypes
   babel_mime_type: (?:(?:text|application)/babel)
-  coffeescript_mime_type: (?:(?:text|application)/coffeescript)
+  coffeescript_mime_type: (?:(?:text|application)/coffee(?:script)?)
   livescript_mime_type: (?:(?:text|application)/livescript)
   typescript_mime_type: (?:(?:text|application)/typescript)
 
@@ -65,12 +65,12 @@ contexts:
     - include: script-lang-attribute
 
   script-lang-attribute:
-    - match: (?i:lang){{attribute_name_break}}
-      scope: meta.attribute-with-value.html entity.other.attribute-name.html
+    - match: (?i:lang(?:uage)?){{attribute_name_break}}
+      scope: meta.attribute-with-value.lang.html entity.other.attribute-name.html
       set: script-lang-attribute-assignment
 
   script-lang-attribute-assignment:
-    - meta_content_scope: meta.tag.script.begin.html meta.attribute-with-value.html
+    - meta_content_scope: meta.tag.script.begin.html meta.attribute-with-value.lang.html
     - match: =
       scope: punctuation.separator.key-value.html
       set: script-lang-attribute-value
@@ -79,39 +79,34 @@ contexts:
 
   script-lang-attribute-value:
     - meta_include_prototype: false
-    - meta_scope: meta.tag.script.begin.html meta.attribute-with-value.html
+    - meta_scope: meta.tag.script.begin.html meta.attribute-with-value.lang.html
     - include: script-lang-decider
 
   script-lang-decider:
     - match: (?i)(?=babel{{unquoted_attribute_break}}|'babel'|"babel")
       set:
         - script-babel
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
-    - match: (?i)(?=coffeescript{{unquoted_attribute_break}}|'coffeescript'|"coffeescript")
+    - match: (?i)(?=coffee(?:script)?{{unquoted_attribute_break}}|'coffee(?:script)?'|"coffee(?:script)?")
       set:
         - script-coffeescript
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?=livescript{{unquoted_attribute_break}}|'livescript'|"livescript")
       set:
         - script-livescript
-        - tag-generic-attribute-meta
-        - tag-generic-attribute-value
-    - match: (?i)(?=(?:js|javascript){{unquoted_attribute_break}}|'(?:js|javascript)'|"(?:js|javascript)")
-      set:
-        - script-javascript
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?=(?:ts|typescript){{unquoted_attribute_break}}|'(?:ts|typescript)'|"(?:ts|typescript)")
       set:
         - script-typescript
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
     - match: (?=\S)
       set:
         - script-javascript
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
 
   script-type-decider:
@@ -119,22 +114,22 @@ contexts:
     - match: (?i)(?={{babel_mime_type}}{{unquoted_attribute_break}}|'{{babel_mime_type}}'|"{{babel_mime_type}}")
       set:
         - script-babel
-        - tag-generic-attribute-meta
+        - tag-type-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?={{coffeescript_mime_type}}{{unquoted_attribute_break}}|'{{coffeescript_mime_type}}'|"{{coffeescript_mime_type}}")
       set:
         - script-coffeescript
-        - tag-generic-attribute-meta
+        - tag-type-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?={{livescript_mime_type}}{{unquoted_attribute_break}}|'{{livescript_mime_type}}'|"{{livescript_mime_type}}")
       set:
         - script-livescript
-        - tag-generic-attribute-meta
+        - tag-type-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?={{typescript_mime_type}}{{unquoted_attribute_break}}|'{{typescript_mime_type}}'|"{{typescript_mime_type}}")
       set:
         - script-typescript
-        - tag-generic-attribute-meta
+        - tag-type-attribute-meta
         - tag-generic-attribute-value
 
   script-babel:
@@ -236,12 +231,12 @@ contexts:
     - include: style-lang-attribute
 
   style-lang-attribute:
-    - match: (?i:lang){{attribute_name_break}}
-      scope: meta.attribute-with-value.html entity.other.attribute-name.html
+    - match: (?i:lang(?:uage)?){{attribute_name_break}}
+      scope: meta.attribute-with-value.lang.html entity.other.attribute-name.html
       set: style-lang-attribute-assignment
 
   style-lang-attribute-assignment:
-    - meta_content_scope: meta.tag.style.begin.html meta.attribute-with-value.html
+    - meta_content_scope: meta.tag.style.begin.html meta.attribute-with-value.lang.html
     - match: =
       scope: punctuation.separator.key-value.html
       set: style-lang-attribute-value
@@ -250,71 +245,71 @@ contexts:
 
   style-lang-attribute-value:
     - meta_include_prototype: false
-    - meta_scope: meta.tag.style.begin.html meta.attribute-with-value.html
+    - meta_scope: meta.tag.style.begin.html meta.attribute-with-value.lang.html
     - include: style-lang-decider
 
   style-lang-decider:
     - match: (?i)(?=postcss{{unquoted_attribute_break}}|'postcss'|"postcss")
       set:
         - style-postcss
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?=less{{unquoted_attribute_break}}|'less'|"less")
       set:
         - style-less
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?=sass{{unquoted_attribute_break}}|'sass'|"sass")
       set:
         - style-sass
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?=scss{{unquoted_attribute_break}}|'scss'|"scss")
       set:
         - style-scss
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?=stylus{{unquoted_attribute_break}}|'stylus'|"stylus")
       set:
         - style-stylus
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
     - match: (?=\S)
       set:
         - style-css
-        - tag-generic-attribute-meta
+        - tag-lang-attribute-meta
         - tag-generic-attribute-value
 
   style-type-decider:
     - match: (?i)(?=text/postcss{{unquoted_attribute_break}}|'text/postcss'|"text/postcss")
       set:
         - style-postcss
-        - tag-generic-attribute-meta
+        - tag-type-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?=text/less{{unquoted_attribute_break}}|'text/less'|"text/less")
       set:
         - style-less
-        - tag-generic-attribute-meta
+        - tag-type-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?=text/sass{{unquoted_attribute_break}}|'text/sass'|"text/sass")
       set:
         - style-sass
-        - tag-generic-attribute-meta
+        - tag-type-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?=text/scss{{unquoted_attribute_break}}|'text/scss'|"text/scss")
       set:
         - style-scss
-        - tag-generic-attribute-meta
+        - tag-type-attribute-meta
         - tag-generic-attribute-value
     - match: (?i)(?=text/stylus{{unquoted_attribute_break}}|'text/stylus'|"text/stylus")
       set:
         - style-stylus
-        - tag-generic-attribute-meta
+        - tag-type-attribute-meta
         - tag-generic-attribute-value
     - match: (?=\S)
       set:
         - style-css
-        - tag-generic-attribute-meta
+        - tag-type-attribute-meta
         - tag-generic-attribute-value
 
   style-less:
@@ -451,6 +446,19 @@ contexts:
       pop: 1
     - include: scope:source.css.embedded.svelte.single-quoted
       apply_prototype: true
+###[ HTML TAG ATTRIBUTES ]#####################################################
+
+  tag-lang-attribute-meta:
+    # required until ST4184 (PR #4061)
+    - meta_include_prototype: false
+    - meta_scope: meta.attribute-with-value.lang.html
+    - include: immediately-pop
+
+  tag-type-attribute-meta:
+    # required until ST4184 (PR #4061)
+    - meta_include_prototype: false
+    - meta_scope: meta.attribute-with-value.type.html
+    - include: immediately-pop
 
 ###[ SVELTE COMPONENTS ]#######################################################
 

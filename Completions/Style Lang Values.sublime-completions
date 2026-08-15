@@ -1,0 +1,35 @@
+{
+	"scope": "text.html.svelte meta.tag.style meta.attribute-with-value.lang",
+	"completions": [
+		{
+			"trigger": "css",
+			"kind": ["type", "t", "Language Type"],
+			"details": "CSS"
+		},
+		{
+			"trigger": "less",
+			"kind": ["type", "t", "Language Type"],
+			"details": "Less"
+		},
+		{
+			"trigger": "postcss",
+			"kind": ["type", "t", "Language Type"],
+			"details": "PostCSS"
+		},
+		{
+			"trigger": "sass",
+			"kind": ["type", "t", "Language Type"],
+			"details": "Sass"
+		},
+		{
+			"trigger": "scss",
+			"kind": ["type", "t", "Language Type"],
+			"details": "SCSS"
+		},
+		{
+			"trigger": "stylus",
+			"kind": ["type", "t", "Language Type"],
+			"details": "Stylus"
+		},
+	]
+}

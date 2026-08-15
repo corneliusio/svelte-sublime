@@ -32,6 +32,48 @@
     }
 </script>
 
+<script lang="coffee">
+/*^^^^^^^^^^^^^^^^^^^^ meta.template.svelte meta.tag.script.begin.html */
+/*^^^^^ entity.name.tag.script.html */
+/*      ^^^^^^^^^^^^^ meta.attribute-with-value.lang.html */
+/*      ^^^^ entity.other.attribute-name.html */
+/*          ^ punctuation.separator.key-value.html */
+/*           ^^^^^^^^ meta.string.html string.quoted.double.html */
+/*           ^ punctuation.definition.string.begin.html */
+/*                  ^ punctuation.definition.string.end.html */
+/*                   ^ punctuation.definition.tag.end.html */
+
+/* <- source.coffee.embedded.html */
+</script>
+
+<script lang="coffeescript">
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.template.svelte meta.tag.script.begin.html */
+/*^^^^^ entity.name.tag.script.html */
+/*      ^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value.lang.html */
+/*      ^^^^ entity.other.attribute-name.html */
+/*          ^ punctuation.separator.key-value.html */
+/*           ^^^^^^^^^^^^^^ meta.string.html string.quoted.double.html */
+/*           ^ punctuation.definition.string.begin.html */
+/*                        ^ punctuation.definition.string.end.html */
+/*                         ^ punctuation.definition.tag.end.html */
+
+/* <- source.coffee.embedded.html */
+</script>
+
+<script lang="livescript">
+/*^^^^^^^^^^^^^^^^^^^^^^^^ meta.template.svelte meta.tag.script.begin.html */
+/*^^^^^ entity.name.tag.script.html */
+/*      ^^^^^^^^^^^^^^^^^ meta.attribute-with-value.lang.html */
+/*      ^^^^ entity.other.attribute-name.html */
+/*          ^ punctuation.separator.key-value.html */
+/*           ^^^^^^^^^^^^ meta.string.html string.quoted.double.html */
+/*           ^ punctuation.definition.string.begin.html */
+/*                      ^ punctuation.definition.string.end.html */
+/*                       ^ punctuation.definition.tag.end.html */
+
+/* <- source.livescript.embedded.html */
+</script>
+
 ###[ STYLES ]##################################################################
 
 <style>
@@ -108,6 +150,20 @@
 /*               ^ punctuation.section.interpolation.end.scss */
     }
 /* ^^ source.scss.embedded.html meta.at-rule.mixin.scss meta.property-list.css meta.block.css */
+</style>
+
+<style lang="stylus">
+/*^^^^^^^^^^^^^^^^^^^ meta.template.svelte meta.tag.style.begin.html */
+/*^^^^ entity.name.tag.style.html */
+/*     ^^^^^^^^^^^^^ meta.attribute-with-value.lang.html */
+/*     ^^^^ entity.other.attribute-name.html */
+/*         ^ punctuation.separator.key-value.html */
+/*          ^^^^^^^^ meta.string.html string.quoted.double.html */
+/*          ^ punctuation.definition.string.begin.html */
+/*                 ^ punctuation.definition.string.end.html */
+/*                  ^ punctuation.definition.tag.end.html */
+
+/* <- source.stylus.embedded.html */
 </style>
 
 ###[ ATTRIBUTES ]##############################################################

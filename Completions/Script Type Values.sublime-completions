@@ -1,0 +1,58 @@
+{
+	"scope": "text.html.svelte meta.tag.script meta.attribute-with-value.type",
+	"completions": [
+
+		// Note: JavaScript mime type is provided out of the box as of ST4184+
+
+		{
+			"trigger": "application/babel",
+			"kind": ["type", "t", "Language Type"],
+			"details": "Babel"
+		},
+		{
+			"trigger": "application/coffee",
+			"kind": ["type", "t", "Language Type"],
+			"details": "CoffeeScript"
+		},
+		{
+			"trigger": "application/coffeescript",
+			"kind": ["type", "t", "Language Type"],
+			"details": "CoffeeScript"
+		},
+		{
+			"trigger": "application/livescript",
+			"kind": ["type", "t", "Language Type"],
+			"details": "LiveScript"
+		},
+		{
+			"trigger": "application/typescript",
+			"kind": ["type", "t", "Language Type"],
+			"details": "TypeScript"
+		},
+		{
+			"trigger": "text/babel",
+			"kind": ["type", "t", "Language Type"],
+			"details": "Babel"
+		},
+		{
+			"trigger": "text/coffee",
+			"kind": ["type", "t", "Language Type"],
+			"details": "CoffeeScript"
+		},
+		{
+			"trigger": "text/coffeescript",
+			"kind": ["type", "t", "Language Type"],
+			"details": "CoffeeScript"
+		},
+		{
+			"trigger": "text/livescript",
+			"kind": ["type", "t", "Language Type"],
+			"details": "LiveScript"
+		},
+		{
+			"trigger": "text/typescript",
+			"kind": ["type", "t", "Language Type"],
+			"details": "TypeScript"
+		},
+	]
+}

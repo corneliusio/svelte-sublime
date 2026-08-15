@@ -64,10 +64,30 @@ jobs:
           repository: SublimeText/Sass
           ref: ${{ matrix.sass_ref }}
           path: Sass
+      - name: Prepare dummy syntaxes
+        run: |
+          scopes=(
+              source.coffee
+              source.livescript
+              source.postcss
+              source.sss
+              source.stylus
+          )
+          mkdir -vp "Dummy"
+          for scope in ${scopes[@]}; do
+          cat << SYNTAX > "Dummy/$scope.sublime-syntax"
+          %YAML 1.2
+          ---
+          scope: $scope
+
+          contexts:
+              main: []
+          SYNTAX
+          done
       - uses: SublimeText/syntax-test-action@v2
         with:
           build: ${{ matrix.build }}
           package_name: Svelte
           package_root: Svelte
           default_packages: ${{ matrix.default_packages }}
-          additional_packages: Less,Sass
+          additional_packages: Dummy,Less,Sass

@@ -1,0 +1,45 @@
+{
+	"scope": "text.html.svelte meta.tag.script meta.attribute-with-value.lang",
+	"completions": [
+		{
+			"trigger": "babel",
+			"kind": ["type", "t", "Language Type"],
+			"details": "Babel"
+		},
+		{
+			"trigger": "coffee",
+			"kind": ["type", "t", "Language Type"],
+			"details": "CoffeeScript"
+		},
+		{
+			"trigger": "coffeescript",
+			"kind": ["type", "t", "Language Type"],
+			"details": "CoffeeScript"
+		},
+		{
+			"trigger": "livescript",
+			"kind": ["type", "t", "Language Type"],
+			"details": "LiveScript"
+		},
+		{
+			"trigger": "js",
+			"kind": ["type", "t", "Language Type"],
+			"details": "JavaScript"
+		},
+		{
+			"trigger": "javascript",
+			"kind": ["type", "t", "Language Type"],
+			"details": "JavaScript"
+		},
+		{
+			"trigger": "ts",
+			"kind": ["type", "t", "Language Type"],
+			"details": "TypeScript"
+		},
+		{
+			"trigger": "typescript",
+			"kind": ["type", "t", "Language Type"],
+			"details": "TypeScript"
+		},
+	]
+}
