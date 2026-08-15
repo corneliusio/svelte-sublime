@@ -46,6 +46,23 @@ contexts:
       pop: 3
     - include: ts-type-expression-end
 
+  # declaration tags: {let sum = a + b}, {const {width, height} = box}
+  svelte-declaration:
+    - match: (?:const|let){{identifier_break}}
+      scope: keyword.declaration.js
+      set:
+        - variable-binding-list-top
+        - variable-binding-top
+    - include: else-pop
+
+  # binding + initializer of {@const ...} special tags
+  svelte-declaration-binding:
+    - meta_include_prototype: false
+    - match: ''
+      set:
+        - variable-binding-list-top
+        - variable-binding-top
+
   literal-variable:
     - meta_prepend: true
     - match: (\$\$)(?:restProps|props|slots)\b

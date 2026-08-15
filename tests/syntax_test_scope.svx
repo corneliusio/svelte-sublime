@@ -268,3 +268,7 @@ Markdown remains **bold** after the unclosed Svelte block.
 |^^^^^ variable.other.readwrite.js
 |      ^^ keyword.operator.type.js
 |         ^^^^^^ support.type.primitive.string.js
+
+{@render row(item)}
+|^^^^^^^ support.function.svelte
+|        ^^^ variable.function.js

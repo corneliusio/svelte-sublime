@@ -649,9 +649,15 @@ contexts:
 
   svelte-embedded-begin:
     - meta_include_prototype: false
-    - match: \@(?:html|debug|const)\b
+    - match: \@(?:html|debug|render)\b
       scope: support.function.svelte
       pop: 1
+    - match: \@const\b
+      scope: support.function.svelte
+      set: scope:source.js.embedded.svelte#svelte-declaration-binding
+    # declaration tags
+    - match: (?=(?:let|const)\b)
+      set: scope:source.js.embedded.svelte#svelte-declaration
     # conditionals
     - match: \#if\b
       scope: keyword.control.conditional.if.svelte
@@ -678,10 +684,7 @@ contexts:
     # snippets
     - match: \#snippet\b
       scope: keyword.control.snippet.begin.svelte
-      set:
-        - svelte-embedded-index
-        - svelte-embedded-as
-        - scope:source.js.embedded.svelte#expression
+      set: svelte-snippet-name
     - match: /snippet\b
       scope: keyword.control.snippet.end.svelte
       pop: 1
@@ -736,6 +739,29 @@ contexts:
       pop: 1
     - include: else-pop
 
+  svelte-snippet-name:
+    - meta_include_prototype: false
+    # no \b boundaries: they fail before/after names starting or ending
+    # with `$`, which is a valid identifier character but not a word one
+    - match: '[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*'
+      scope: entity.name.function.svelte
+      set: svelte-snippet-parameters
+    - include: else-pop
+
+  svelte-snippet-parameters:
+    - meta_include_prototype: false
+    - match: (?=<)
+      push: scope:source.js.embedded.svelte#ts-type-parameter-list
+    - match: \(
+      scope: punctuation.section.group.begin.js
+      set:
+        - meta_scope: meta.function.parameters.js
+        - match: \)
+          scope: punctuation.section.group.end.js
+          pop: 1
+        - include: scope:source.js.embedded.svelte#function-parameter-binding-list
+    - include: else-pop
+
   svelte-embedded-body:
     - meta_scope: meta.embedded.block.svelte
     - meta_content_scope: source.js.embedded.svelte
@@ -749,7 +775,16 @@ contexts:
   svelte-interpolations:
     - match: \{
       scope: punctuation.section.embedded.begin.svelte
-      push: svelte-interpolation-body
+      push:
+        - svelte-interpolation-body
+        - svelte-interpolation-begin
+
+  svelte-interpolation-begin:
+    - meta_include_prototype: false
+    - match: \@attach\b
+      scope: support.function.svelte
+      pop: 1
+    - include: else-pop
 
   svelte-interpolation-body:
     - clear_scopes: 1 # clear string scope
