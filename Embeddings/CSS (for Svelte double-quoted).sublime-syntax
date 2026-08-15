@@ -1,0 +1,39 @@
+%YAML 1.2
+---
+# A special syntax definition to drive double quoted inline style attributes
+# with {...} interpolation support
+scope: source.css.embedded.svelte.double-quoted
+version: 2
+hidden: true
+
+extends: Packages/CSS/CSS.sublime-syntax
+
+variables:
+  ident_start: (?:{{nmstart}}|{)
+
+contexts:
+  main:
+    - include: rule-list-body
+
+  prototype:
+    - meta_prepend: true
+    - include: Svelte.sublime-syntax#svelte-blocks
+
+  string-content:
+    - meta_prepend: true
+    - include: Svelte.sublime-syntax#svelte-interpolations
+
+  quoted-strings:
+    - meta_prepend: true
+    - match: (?=\")
+      pop: 1
+
+  quoted-string:
+    - meta_prepend: true
+    - match: (?=\")
+      pop: 1
+
+  quoted-urls:
+    - meta_prepend: true
+    - match: (?=\")
+      pop: 1

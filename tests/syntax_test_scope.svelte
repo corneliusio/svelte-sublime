@@ -157,6 +157,37 @@
 /*                                             ^^^^^^^^^^^ meta.string.html meta.interpolation.html source.css.embedded.html meta.property-value.css meta.function-call.arguments.css meta.group.css
 /*                                                        ^ meta.string.html string.quoted.double.html punctuation.definition.string.end.html
 
+<CopyButton style='flex px-4 {dynamicClasses}' />
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.template.svelte meta.tag.component.html */
+/*^^^^^^^^^ entity.name.tag.component.svelte */
+/*          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value.html */
+/*          ^^^^^ entity.other.attribute-name.html */
+/*               ^ punctuation.separator.key-value.html */
+/*                ^^^^^^^^^^^ meta.string.html string.quoted.single.html */
+/*                ^ punctuation.definition.string.begin.html */
+/*                           ^^^^^^^^^^^^^^^^ meta.string.html meta.embedded.block.svelte */
+/*                           ^ punctuation.section.embedded.begin.svelte */
+/*                            ^^^^^^^^^^^^^^ source.js.embedded.svelte variable.other.readwrite.js */
+/*                                          ^ punctuation.section.embedded.end.svelte */
+/*                                           ^ string.quoted.single.html punctuation.definition.string.end.html */
+/*                                             ^^ punctuation.definition.tag.end.html */
+
+<button style="-moz-{prop['name']}: '{color["key"]}'"></button>
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.tag */
+/*      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value.style.html */
+/*            ^ meta.string.html string.quoted.double.html punctuation.definition.string.begin.html */
+/*             ^^^^^ meta.string.html meta.interpolation.html source.css.embedded.html - meta.embedded.block.svelte */
+/*                  ^^^^^^^^^^^^^^ meta.string.html meta.interpolation.html source.css.embedded.html meta.embedded.block.svelte */
+/*                  ^ punctuation.section.embedded.begin.svelte */
+/*                   ^^^^^^^^^^^^ source.js.embedded.svelte */
+/*                               ^ punctuation.section.embedded.end.svelte */
+/*                                ^^^ meta.string.html meta.interpolation.html source.css.embedded.html - meta.embedded.block.svelte */
+/*                                   ^^^^^^^^^^^^^^ meta.string.html meta.interpolation.html source.css.embedded.html meta.embedded.block.svelte */
+/*                                                 ^ meta.string.html meta.interpolation.html source.css.embedded.html - meta.embedded.block.svelte */
+/*                                                  ^ meta.string.html string.quoted.double.html punctuation.definition.string.end.html */
+/*                                                   ^ punctuation.definition.tag.end.html */
+
+
 ###[ COMPONENTS ]##############################################################
 
     <MyComponent {...}/>

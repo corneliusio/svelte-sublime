@@ -422,6 +422,36 @@ contexts:
         3: source.stylus.embedded.html
         4: comment.block.html punctuation.definition.comment.end.html
 
+###[ STYLE ATTRIBUTES ]########################################################
+
+  tag-style-attribute-value:
+    - meta_include_prototype: false
+    - match: \"
+      scope: meta.string.html string.quoted.double.html punctuation.definition.string.begin.html
+      set: tag-style-attribute-double-quoted-value
+    - match: \'
+      scope: meta.string.html string.quoted.single.html punctuation.definition.string.begin.html
+      set: tag-style-attribute-single-quoted-value
+    - include: else-pop
+
+  tag-style-attribute-double-quoted-value:
+    - meta_include_prototype: false
+    - meta_content_scope: meta.string.html meta.interpolation.html source.css.embedded.html
+    - match: \"
+      scope: meta.string.html string.quoted.double.html punctuation.definition.string.end.html
+      pop: 1
+    - include: scope:source.css.embedded.svelte.double-quoted
+      apply_prototype: true
+
+  tag-style-attribute-single-quoted-value:
+    - meta_include_prototype: false
+    - meta_content_scope: meta.string.html meta.interpolation.html source.css.embedded.html
+    - match: \'
+      scope: meta.string.html string.quoted.single.html punctuation.definition.string.end.html
+      pop: 1
+    - include: scope:source.css.embedded.svelte.single-quoted
+      apply_prototype: true
+
 ###[ SVELTE COMPONENTS ]#######################################################
 
   svelte-components:
@@ -435,7 +465,15 @@ contexts:
   svelte-component-body:
     - meta_scope: meta.tag.component.html
     - include: tag-end-maybe-self-closing
-    - include: tag-attributes
+    # all tag-attributes (except `event` and `style`)
+    - include: svelte-string-attributes
+    - include: svelte-storage-attributes
+    - include: svelte-style-attributes
+    - include: svelte-variable-attributes
+    - include: tag-id-attribute
+    - include: tag-class-attribute
+    - include: tag-href-attribute
+    - include: tag-generic-attribute
 
 ###[ SVELTE TAG ATTRIBUTES ]###################################################
 
@@ -479,23 +517,32 @@ contexts:
     - include: else-pop
 
   svelte-style-attribute-value:
+    - meta_include_prototype: false
     - match: \"
       scope: meta.string.html string.quoted.double.html punctuation.definition.string.begin.html
-      embed: scope:source.css#property-value-content
-      embed_scope: meta.string.html meta.interpolation.html source.css.embedded.html
-      escape: \"
-      escape_captures:
-        0: meta.attribute-with-value.style.html meta.string.html string.quoted.double.html punctuation.definition.string.end.html
-      pop: 1
+      set: svelte-style-attribute-double-quoted-value
     - match: \'
       scope: meta.string.html string.quoted.single.html punctuation.definition.string.begin.html
-      embed: scope:source.css#property-value-content
-      embed_scope: meta.string.html meta.interpolation.html source.css.embedded.html
-      escape: \'
-      escape_captures:
-        0: meta.attribute-with-value.style.html meta.string.html string.quoted.single.html punctuation.definition.string.end.html
-      pop: 1
+      set: svelte-style-attribute-single-quoted-value
     - include: else-pop
+
+  svelte-style-attribute-double-quoted-value:
+    - meta_include_prototype: false
+    - meta_content_scope: meta.string.html meta.interpolation.html source.css.embedded.html meta.property-value.css
+    - match: \"
+      scope: meta.string.html string.quoted.double.html punctuation.definition.string.end.html
+      pop: 1
+    - include: scope:source.css.embedded.svelte.double-quoted#property-value-content
+      apply_prototype: true
+
+  svelte-style-attribute-single-quoted-value:
+    - meta_include_prototype: false
+    - meta_content_scope: meta.string.html meta.interpolation.html source.css.embedded.html meta.property-value.css
+    - match: \'
+      scope: meta.string.html string.quoted.single.html punctuation.definition.string.end.html
+      pop: 1
+    - include: scope:source.css.embedded.svelte.single-quoted#property-value-content
+      apply_prototype: true
 
   svelte-variable-attributes:
     - match: ((?i:in|out|transition|animate|use))(:)({{svelte_attribute_name}})
