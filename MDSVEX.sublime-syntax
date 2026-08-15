@@ -1,0 +1,66 @@
+%YAML 1.2
+---
+# https://mdsvex.pngwn.io/docs
+# https://www.sublimetext.com/docs/syntax.html
+name: MDSVEX
+scope: text.html.markdown.mdsvex
+version: 2
+
+extends: Packages/Markdown/Markdown.sublime-syntax
+
+file_extensions:
+  - svx
+  - mdsv
+  - mdsvex
+
+contexts:
+  # MDSVEX doesn't support indented code blocka, yeah!!
+  indented-code-blocks: []
+
+  # Fix missing markup syntax in ST's Markdown
+  # required until PR #3737 (ST4156)
+  atx-heading-content:
+    - meta_append: true
+    - include: markups
+
+  html-content:
+    - include: scope:text.html.svelte#html
+
+  markups:
+    - meta_prepend: true
+    - include: scope:text.html.svelte#svelte-blocks
+    - include: scope:text.html.svelte#svelte-interpolations
+    - include: scope:text.html.svelte#svelte-components
+
+variables:
+  #
+  # MDSVEX variables
+  #
+  # The following variables override those from Markdown in order to
+  # be more permissive with regards to leading and intermediate whitespace
+  #
+  atx_heading: (?:\s*[#]{1,6}(?:\s|$))                 # between 0 and 3 spaces, followed 1 to 6 hashes, followed by at least one space or tab or by end of the line
+  atx_heading_space: (?:(?=\s+#+\s*$)|\s+|$)           # consume spaces only if heading is not empty to ensure `atx_heading_end` can fully match closing hashes
+  atx_heading_end: (?:\s+(#+))?\s*?($\n?)              # \n is optional so ## is matched as end punctuation in new document (at eof)
+
+  setext_heading_or_paragraph: ^(?:\s*=+|(?=\s*\S))    # any number of spaces, followed by non-whitespace (consume equal signs as paragraphs may start with them)
+  setext_heading_escape: ^(?=\s*(?:=+|-+)\s*$)         # any number of spaces, followed by at least one hyphen or equal sign (setext underline can be of any length)
+  setext_heading1_escape: ^(?=\s*=+\s*$)               # any number of spaces, followed by at least one equal sign (setext underline can be of any length)
+  setext_heading1_end: ^\s*(=+)\s*$(\n?)               # any number of spaces, followed by at least one equal sign (setext underline can be of any length)
+  setext_heading2_end: ^\s*(-+)\s*$(\n?)               # any number of spaces, followed by at least one hyphen (setext underline can be of any length)
+
+  block_quote: (?:\s*(>)[ ]?)                          # any number of spaces, followed by a greater than sign, (followed by any character or the end of the line = "only care about optional space!")
+
+  first_list_item: (?:\s*(?:1[.)]|[*+-])\s)            # any number of spaces, followed by either: at least one integer and a full stop or a parenthesis, or (a star, plus or dash), followed by whitespace
+  list_item: (?:\s*(?:\d{1,9}[.)]|[*+-])\s)            # any number of spaces, followed by either: at least one integer and a full stop or a parenthesis, or (a star, plus or dash), followed by whitespace
+
+  thematic_break: |-
+    (?x:
+      \s*                        # any number of spaces
+      (?:                        # followed by one of the following:
+        [-](?:\s*[-]){2,}        # - a dash,        followed by the following at least twice: any number of spaces or tabs followed by a dash
+      | [*](?:\s*[*]){2,}        # - a star,        followed by the following at least twice: any number of spaces or tabs followed by a star
+      | [_](?:\s*[_]){2,}        # - an underscore, followed by the following at least twice: any number of spaces or tabs followed by an underscore
+      )
+      \s*$                       # followed by any number of tabs or spaces, followed by the end of the line
+    )
