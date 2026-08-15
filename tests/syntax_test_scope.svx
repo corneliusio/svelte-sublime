@@ -174,3 +174,61 @@
 |^ punctuation.definition.tag.begin.html
 | ^^ entity.name.tag
 |   ^ punctuation.definition.tag.end.html
+
+```
+{#if x}
+|  ^ markup.raw.code-fence.markdown-gfm - meta.embedded.block.svelte
+<Component value={x} />
+| ^ markup.raw.code-fence.markdown-gfm - meta.tag.component.html
+|                ^ markup.raw.code-fence.markdown-gfm - meta.embedded.block.svelte
+{/if}
+|  ^ markup.raw.code-fence.markdown-gfm - meta.embedded.block.svelte
+```
+
+# Sentinel {sentinel01}
+|^^^^^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown
+|            ^ meta.embedded.block.svelte source.js.embedded.svelte
+
+`{notSvelte}`
+| ^ markup.raw.inline.markdown - meta.embedded.block.svelte
+
+<script>
+const inside = 1;
+|^ source.js.embedded.html
+</script>
+|^ meta.tag.script.end.html
+
+<style lang="scss">
+$color: red;
+|^ source.scss.embedded.html
+</style>
+|^ meta.tag.style.end.html
+
+# Sentinel {sentinel02}
+|^^^^^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown
+|            ^ meta.embedded.block.svelte source.js.embedded.svelte
+
+{@html expression}
+| ^ support.function.svelte
+|      ^ meta.embedded.block.svelte source.js.embedded.svelte
+
+{#await promise}
+| ^ meta.embedded.block.svelte source.js.embedded.svelte keyword.control.await.svelte
+{:then value}
+| ^ meta.embedded.block.svelte source.js.embedded.svelte keyword.control.flow.svelte
+{value}
+| ^ meta.embedded.block.svelte source.js.embedded.svelte
+{:catch error}
+| ^ meta.embedded.block.svelte source.js.embedded.svelte keyword.control.flow.svelte
+{/await}
+| ^ meta.embedded.block.svelte source.js.embedded.svelte keyword.control.await.end.svelte
+
+{#if unclosed}
+| ^ meta.embedded.block.svelte source.js.embedded.svelte keyword.control.conditional.if.svelte
+Markdown remains **bold** after the unclosed Svelte block.
+|^ meta.paragraph.markdown
+|                    ^ markup.bold.markdown
+
+# Sentinel {sentinel03}
+|^^^^^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown
+|            ^ meta.embedded.block.svelte source.js.embedded.svelte
