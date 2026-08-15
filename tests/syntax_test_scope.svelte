@@ -751,3 +751,63 @@ let key: K;
 let c: T;
 /* <- source.ts.embedded.html
 </script>
+###[ TYPESCRIPT EXPRESSIONS ]##################################################
+
+    {value as string}
+/*  ^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*   ^^^^^ source.js.embedded.svelte variable.other.readwrite.js
+/*         ^^ keyword.operator.type.js
+/*            ^^^^^^ support.type.primitive.string.js
+/*                  ^ punctuation.section.embedded.end.svelte
+
+    {value as string}<em>contained</em>
+/*                   ^^^^ meta.tag - meta.embedded.block.svelte
+
+    {(e: Event) => handler(e)}
+/*  ^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*   ^ punctuation.section.group.begin.js
+/*    ^ variable.parameter.function.js
+/*     ^ punctuation.separator.type.js
+/*       ^^^^^ support.class.js
+/*            ^ punctuation.section.group.end.js
+/*              ^^ keyword.declaration.function.arrow.js
+/*                 ^^^^^^^ variable.function.js
+/*                         ^ variable.other.readwrite.js
+/*                           ^ punctuation.section.embedded.end.svelte
+
+    {fn<Result>(value)}
+/*   ^^ variable.function.js
+/*     ^ punctuation.definition.generic.begin.js
+/*      ^^^^^^ support.class.js
+/*            ^ punctuation.definition.generic.end.js
+/*             ^ punctuation.section.group.begin.js
+/*              ^^^^^ variable.other.readwrite.js
+/*                   ^ punctuation.section.group.end.js
+
+    {#each (items as Item[]) as item, index (item.id)}<span>{item}</span>{/each}
+/*  ^ punctuation.section.embedded.begin.svelte
+/*   ^^^^^ keyword.control.loop.each.svelte
+/*         ^ punctuation.section.group.begin.js
+/*          ^^^^^ variable.other.readwrite.js
+/*                ^^ keyword.operator.type.js
+/*                   ^^^^ support.class.js
+/*                       ^^ meta.type.js
+/*                         ^ punctuation.section.group.end.js
+/*                           ^^ keyword.operator.assignment.as.svelte
+/*                              ^^^^ variable.other.readwrite.js
+/*                                  ^ punctuation.separator.comma.svelte
+/*                                    ^^^^^ variable.other.readwrite.js
+/*                                          ^ punctuation.section.group.begin.js
+/*                                           ^^^^ variable.other.readwrite.js
+/*                                               ^ punctuation.accessor.js
+/*                                                   ^ punctuation.section.embedded.end.svelte
+
+    {#each items as Item[] as item}<span>{item}</span>{/each}
+/*   ^^^^^ keyword.control.loop.each.svelte
+/*         ^^^^^ variable.other.readwrite.js
+/*               ^^ keyword.operator.type.js
+/*                  ^^^^ support.class.js
+/*                      ^^ meta.type.js
+/*                         ^^ keyword.operator.assignment.as.svelte
+/*                            ^^^^ variable.other.readwrite.js
+/*                                ^ punctuation.section.embedded.end.svelte

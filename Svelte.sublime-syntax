@@ -671,7 +671,7 @@ contexts:
       set:
         - svelte-embedded-index
         - svelte-embedded-as
-        - scope:source.js.embedded.svelte#expression
+        - scope:source.js.embedded.svelte#svelte-each-expression
     - match: /each\b
       scope: keyword.control.loop.end.svelte
       pop: 1

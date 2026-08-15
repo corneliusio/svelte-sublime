@@ -4,7 +4,7 @@ scope: source.js.embedded.svelte
 version: 2
 hidden: true
 
-extends: Packages/JavaScript/JavaScript.sublime-syntax
+extends: Packages/JavaScript/TypeScript.sublime-syntax
 
 contexts:
 
@@ -12,6 +12,39 @@ contexts:
   expressions:
     - match: (?=\S)
       push: [ expression-end, expression-begin ]
+
+  # each-block source expressions must stop at the block's `as` keyword,
+  # which TypeScript would otherwise consume as a type assertion; only the
+  # last `as` before the closing brace is the block's own, so earlier ones
+  # keep their assertion meaning: {#each items as Item[] as item}
+  svelte-each-expression:
+    - match: (?=\S)
+      set: [ svelte-each-expression-end, expression-begin ]
+
+  svelte-each-expression-end:
+    - match: (?=as{{identifier_break}}(?![^{}]*\sas{{identifier_break}}))
+      pop: 1
+    # mirrors ts-type-assertion, but with a guarded type-expression-end so
+    # the block's own `as` is not consumed as a chained assertion
+    - match: as{{identifier_break}}
+      scope: keyword.operator.type.js
+      push:
+        - match: const{{identifier_break}}
+          scope: storage.modifier.const.js
+          pop: 1
+        - match: (?=\S)
+          set:
+            - ts-type-meta
+            - svelte-each-type-expression-end
+            - ts-type-expression-end-no-line-terminator
+            - ts-type-expression-begin
+    - include: expression-end
+
+  svelte-each-type-expression-end:
+    # pops this context, ts-type-meta and svelte-each-expression-end
+    - match: (?=as{{identifier_break}}(?![^{}]*\sas{{identifier_break}}))
+      pop: 3
+    - include: ts-type-expression-end
 
   literal-variable:
     - meta_prepend: true

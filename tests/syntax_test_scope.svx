@@ -263,3 +263,8 @@ Markdown remains **bold** after the unclosed Svelte block.
 # Sentinel {sentinel03}
 |^^^^^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown
 |            ^ meta.embedded.block.svelte source.js.embedded.svelte
+
+{value as string}
+|^^^^^ variable.other.readwrite.js
+|      ^^ keyword.operator.type.js
+|         ^^^^^^ support.type.primitive.string.js
