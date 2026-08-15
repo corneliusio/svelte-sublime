@@ -21,6 +21,7 @@ variables:
   svelte_attribute_name: '[[:alnum:]_-]+'
   svelte_component_name: '[[:upper:]][[:alnum:]_]*'
   svelte_tag_name: '[[:alpha:]][[:alnum:]_]*'
+  svelte_ts_identifier: '[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*'
 
 contexts:
 
@@ -63,6 +64,7 @@ contexts:
   script-common:
     - meta_prepend: true
     - include: script-lang-attribute
+    - include: script-generics-attribute
 
   script-lang-attribute:
     - match: (?i:lang(?:uage)?){{attribute_name_break}}
@@ -108,6 +110,67 @@ contexts:
         - script-javascript
         - tag-lang-attribute-meta
         - tag-generic-attribute-value
+
+  script-generics-attribute:
+    # https://svelte.dev/docs/svelte/typescript#Generic-$props
+    # Pushed (not set) so the surrounding script context survives and a
+    # lang attribute may appear on either side of it.
+    - match: (?i:generics){{attribute_name_break}}
+      scope: meta.attribute-with-value.generics.svelte entity.other.attribute-name.html
+      push:
+        - script-generics-attribute-meta
+        - script-generics-attribute-assignment
+
+  script-generics-attribute-meta:
+    - meta_include_prototype: false
+    - meta_scope: meta.attribute-with-value.generics.svelte
+    - include: immediately-pop
+
+  script-generics-attribute-assignment:
+    - meta_include_prototype: false
+    - match: =
+      scope: punctuation.separator.key-value.html
+      set: script-generics-attribute-value
+    - include: else-pop
+
+  script-generics-attribute-value:
+    - meta_include_prototype: false
+    - match: \"
+      scope: meta.string.html string.quoted.double.html punctuation.definition.string.begin.html
+      set: script-generics-attribute-double-quoted-value
+    - match: \'
+      scope: meta.string.html string.quoted.single.html punctuation.definition.string.begin.html
+      set: script-generics-attribute-single-quoted-value
+    - include: else-pop
+
+  script-generics-attribute-double-quoted-value:
+    - meta_include_prototype: false
+    - meta_content_scope: meta.string.html source.ts.embedded.html
+    - match: \"
+      scope: meta.string.html string.quoted.double.html punctuation.definition.string.end.html
+      pop: 1
+    - include: script-generics-parameters
+
+  script-generics-attribute-single-quoted-value:
+    - meta_include_prototype: false
+    - meta_content_scope: meta.string.html source.ts.embedded.html
+    - match: \'
+      scope: meta.string.html string.quoted.single.html punctuation.definition.string.end.html
+      pop: 1
+    - include: script-generics-parameters
+
+  script-generics-parameters:
+    # the content of a TypeScript type parameter list, without the
+    # angle brackets: Item extends { text: string } = Default, ...
+    - match: ','
+      scope: punctuation.separator.comma.js
+    - match: const(?![_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}])
+      scope: storage.modifier.const.js
+    - match: '{{svelte_ts_identifier}}'
+      scope: variable.parameter.type.js
+      push:
+        - scope:source.ts#ts-type-parameter-default
+        - scope:source.ts#ts-type-parameter-constraint
 
   script-type-decider:
     - meta_prepend: true
