@@ -446,16 +446,20 @@ contexts:
       pop: 1
     - include: scope:source.css.embedded.svelte.single-quoted
       apply_prototype: true
+
 ###[ HTML TAG ATTRIBUTES ]#####################################################
 
   tag-lang-attribute-meta:
-    # required until ST4184 (PR #4061)
+    # Package-owned context: core HTML defines no `lang` attribute context
+    # (sublimehq/Packages#4061 added only the `type` context to core HTML).
+    # Referenced by the script and style lang deciders — do not remove.
     - meta_include_prototype: false
     - meta_scope: meta.attribute-with-value.lang.html
     - include: immediately-pop
 
   tag-type-attribute-meta:
-    # required until ST4184 (PR #4061)
+    # Required until the minimum supported default packages include
+    # sublimehq/Packages#4061 (first bundled in v4193).
     - meta_include_prototype: false
     - meta_scope: meta.attribute-with-value.type.html
     - include: immediately-pop
