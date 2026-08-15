@@ -32,6 +32,22 @@ contexts:
     - include: scope:text.html.svelte#svelte-interpolations
     - include: scope:text.html.svelte#svelte-components
 
+  # Support interpolation in link/image destinations, e.g. [text](/{slug}).
+  # `link-url-common` is included by all destination forms (unquoted and
+  # angle-bracketed, links and images) in Markdown's syntax.
+  link-url-common:
+    - meta_prepend: true
+    - include: url-interpolations
+
+  url-interpolations:
+    # Destination-local guard: only start an interpolation if it closes
+    # before the destination can end (whitespace, `)` or `>`). A literal
+    # unmatched `{` is valid in a CommonMark destination and must not leak
+    # the embedded scope past the link.
+    - match: \{(?=[^\s)>}]*\})
+      scope: punctuation.section.embedded.begin.svelte
+      push: scope:text.html.svelte#svelte-interpolation-body
+
 variables:
   #
   # MDSVEX variables
