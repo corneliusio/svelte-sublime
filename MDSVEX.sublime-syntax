@@ -14,7 +14,7 @@ file_extensions:
   - mdsvex
 
 contexts:
-  # MDSVEX doesn't support indented code blocka, yeah!!
+  # MDSVEX doesn't support indented code blocks, yeah!!
   indented-code-blocks: []
 
   # Fix missing markup syntax in ST's Markdown
