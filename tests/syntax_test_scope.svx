@@ -174,3 +174,35 @@
 |^ punctuation.definition.tag.begin.html
 | ^^ entity.name.tag
 |   ^ punctuation.definition.tag.end.html
+
+[text {label}](/path/{slug})
+|       ^ meta.embedded.block.svelte source.js.embedded.svelte variable.other.readwrite.js
+|              ^^^^^^ markup.underline.link.markdown - meta.embedded.block.svelte
+|                    ^ meta.embedded.block.svelte punctuation.section.embedded.begin.svelte
+|                     ^^^^ meta.link.inline.metadata.markdown meta.embedded.block.svelte source.js.embedded.svelte variable.other.readwrite.js
+|                         ^ meta.embedded.block.svelte punctuation.section.embedded.end.svelte
+|                          ^ punctuation.definition.metadata.end.markdown
+
+![alt {label}](/img/{src}.png)
+|       ^ meta.embedded.block.svelte source.js.embedded.svelte variable.other.readwrite.js
+|              ^^^^^ markup.underline.link.image.markdown - meta.embedded.block.svelte
+|                   ^ meta.embedded.block.svelte punctuation.section.embedded.begin.svelte
+|                    ^^^ meta.image.inline.metadata.markdown meta.embedded.block.svelte source.js.embedded.svelte variable.other.readwrite.js
+|                       ^ meta.embedded.block.svelte punctuation.section.embedded.end.svelte
+|                        ^^^^ markup.underline.link.image.markdown - meta.embedded.block.svelte
+|                            ^ punctuation.definition.metadata.end.markdown
+
+[literal](/path/foo{bar)
+|              ^^^^^^^^ markup.underline.link.markdown - meta.embedded.block.svelte
+
+# Sentinel {sentinelA}
+|^^^^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown
+|           ^ meta.embedded.block.svelte source.js.embedded.svelte
+
+[a](</x{y>)
+|    ^^^^ markup.underline.link.markdown - meta.embedded.block.svelte
+|        ^ punctuation.definition.link.end.markdown
+
+# Sentinel {sentinelB}
+|^^^^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown
+|           ^ meta.embedded.block.svelte source.js.embedded.svelte
