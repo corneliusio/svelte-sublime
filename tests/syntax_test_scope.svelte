@@ -581,3 +581,118 @@
 /*                            ^ meta.string.js string.quoted.double.js punctuation.definition.string.begin.js
 /*                             ^^^^^^^ meta.string.js meta.interpolation.js variable.language.dollar.js - string
 /*                                    ^ meta.string.js string.quoted.double.js punctuation.definition.string.end.js
+
+###[ INTERPOLATED STYLE ATTRIBUTES ]###########################################
+
+<div style="{obj}"></div>
+/*     ^ meta.attribute-with-value.style.html */
+/*             ^ meta.embedded.block.svelte source.js.embedded.svelte variable.other.readwrite.js */
+
+<div style="width: {fn({a: 1})}px"></div>
+/*                  ^ meta.embedded.block.svelte source.js.embedded.svelte meta.function-call.js */
+/*                      ^ meta.mapping.js meta.mapping.key.js */
+/*                           ^ meta.embedded.block.svelte source.js.embedded.svelte */
+/*                            ^ punctuation.section.embedded.end.svelte */
+
+<div style="color: {ok ? 'red' : 'blue'}"></div>
+/*                  ^ meta.embedded.block.svelte source.js.embedded.svelte variable.other.readwrite.js */
+/*                          ^ string.quoted.single.js */
+
+<div style='color: {ok ? "red" : "blue"}'></div>
+/*                  ^ meta.embedded.block.svelte source.js.embedded.svelte variable.other.readwrite.js */
+/*                          ^ string.quoted.double.js */
+
+<div style="background: url({src})"></div>
+/*                             ^ meta.embedded.block.svelte source.js.embedded.svelte variable.other.readwrite.js */
+
+<div style="content: '\'x\''"></div>
+/*                       ^ string.quoted.single.css */
+
+<div style='content: "\"x\""'></div>
+/*                       ^ string.quoted.double.css */
+
+<div style="/* c */ color: red"></div>
+/*            ^ comment.block.css */
+/*                    ^ support.type.property-name.css */
+
+<div style="--x: {v}; color: var(--x)"></div>
+/*            ^ entity.other.custom-property.css */
+/*                ^ meta.embedded.block.svelte source.js.embedded.svelte */
+/*                            ^ support.function.var.css */
+
+<div style="color: red !important; width: {w}px;"></div>
+/*                        ^ keyword.other.important.css */
+/*                                         ^ meta.embedded.block.svelte source.js.embedded.svelte */
+/*                                             ^ punctuation.terminator.rule.css */
+
+<div style="color: {color};
+width: {width}px"></div>
+/* <- meta.string.html meta.interpolation.html source.css.embedded.html */
+/*        ^ meta.embedded.block.svelte source.js.embedded.svelte */
+<p>{sentinel}</p>
+/* <- meta.template.svelte meta.tag */
+/*    ^ meta.embedded.block.svelte source.js.embedded.svelte */
+
+<div style:color={c}></div>
+/*     ^ support.function.svelte */
+/*        ^ punctuation.separator.svelte */
+/*                ^ meta.embedded.block.svelte source.js.embedded.svelte */
+
+###[ COMPONENT STRING ATTRIBUTES ]#############################################
+
+<Comp style="anything {x} here" />
+/*      ^ entity.other.attribute-name.html */
+/*             ^ meta.string.html - source.css.embedded.html */
+/*                     ^ meta.embedded.block.svelte source.js.embedded.svelte */
+
+<Comp onclick="not js" />
+/*      ^ entity.other.attribute-name.html - entity.other.attribute-name.event.html */
+/*               ^ meta.string.html - source.js.embedded.html */
+
+<div onclick="alert('ok')"></div>
+/*     ^ entity.other.attribute-name.event.html */
+/*              ^ source.js.embedded.html */
+
+###[ LANG / TYPE ATTRIBUTE DECIDERS ]##########################################
+
+<script lang=ts>
+let typed: number = 1;
+/* <- source.ts.embedded.html */
+</script>
+/* <- meta.tag.script.end.html punctuation.definition.tag.begin.html */
+
+<script LANG="TS">
+let typed: number = 1;
+/* <- source.ts.embedded.html */
+</script>
+/* <- meta.tag.script.end.html punctuation.definition.tag.begin.html */
+
+<script lang="">
+const emptyLang = true;
+/* <- source.js.embedded.html */
+</script>
+/* <- meta.tag.script.end.html punctuation.definition.tag.begin.html */
+
+<script lang="rust">
+const unknownLang = true;
+/* <- source.js.embedded.html */
+</script>
+/* <- meta.tag.script.end.html punctuation.definition.tag.begin.html */
+
+<script type=text/typescript>
+let typed: number = 1;
+/* <- source.ts.embedded.html */
+</script>
+/* <- meta.tag.script.end.html punctuation.definition.tag.begin.html */
+
+<style lang="unknown">
+a { color: red; }
+/* <- source.css.embedded.html */
+</style>
+/* <- meta.tag.style.end.html punctuation.definition.tag.begin.html */
+
+<style language="scss">
+$color: red;
+/* <- source.scss.embedded.html */
+</style>
+/* <- meta.tag.style.end.html punctuation.definition.tag.begin.html */
