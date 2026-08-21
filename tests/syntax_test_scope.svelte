@@ -696,3 +696,58 @@ $color: red;
 /* <- source.scss.embedded.html */
 </style>
 /* <- meta.tag.style.end.html punctuation.definition.tag.begin.html */
+
+###[ GENERICS ATTRIBUTE ]######################################################
+
+<script lang="ts" generics="Item extends { text: string }, Extra = string">
+/*                ^^^^^^^^ meta.attribute-with-value.generics.svelte entity.other.attribute-name.html
+/*                        ^ punctuation.separator.key-value.html
+/*                         ^ meta.string.html punctuation.definition.string.begin.html
+/*                          ^^^^ source.ts.embedded.html variable.parameter.type.js
+/*                               ^^^^^^^ storage.modifier.extends.js
+/*                                       ^ punctuation.section.mapping.begin.js
+/*                                         ^^^^ variable.other.readwrite.js
+/*                                             ^ punctuation.separator.type.js
+/*                                               ^^^^^^ support.type.primitive.string.js
+/*                                                      ^ punctuation.section.mapping.end.js
+/*                                                       ^ punctuation.separator.comma.js
+/*                                                         ^^^^^ variable.parameter.type.js
+/*                                                               ^ keyword.operator.assignment.js
+/*                                                                 ^^^^^^ support.type.primitive.string.js
+/*                                                                       ^ punctuation.definition.string.end.html - source.ts
+/*                                                                        ^ punctuation.definition.tag.end.html
+    let first: Item;
+/* <- source.ts.embedded.html
+</script>
+
+<script generics="T" lang="ts">
+/*      ^^^^^^^^ meta.attribute-with-value.generics.svelte entity.other.attribute-name.html
+/*                ^ variable.parameter.type.js
+/*                 ^ punctuation.definition.string.end.html
+/*                   ^^^^ entity.other.attribute-name.html
+let generic: T;
+/* <- source.ts.embedded.html
+</script>
+
+<script lang="ts" generics='K extends string = "id"'>
+/*                          ^ variable.parameter.type.js
+/*                            ^^^^^^^ storage.modifier.extends.js
+/*                                    ^^^^^^ support.type.primitive.string.js
+/*                                           ^ keyword.operator.assignment.js
+/*                                             ^^^^ meta.string.js string.quoted.double.js
+/*                                                 ^ punctuation.definition.string.end.html - source.ts
+/*                                                  ^ punctuation.definition.tag.end.html
+let key: K;
+/* <- source.ts.embedded.html
+</script>
+
+<script lang="ts" generics="const T extends readonly string[]">
+/*                          ^^^^^ storage.modifier.const.js
+/*                                ^ variable.parameter.type.js
+/*                                  ^^^^^^^ storage.modifier.extends.js
+/*                                          ^^^^^^^^ storage.modifier
+/*                                                   ^^^^^^ support.type.primitive.string.js
+/*                                                           ^ punctuation.definition.string.end.html - source.ts
+let c: T;
+/* <- source.ts.embedded.html
+</script>
