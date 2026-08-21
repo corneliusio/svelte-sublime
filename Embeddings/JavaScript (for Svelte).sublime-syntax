@@ -20,15 +20,3 @@ contexts:
       captures:
         1: punctuation.definition.variable.js
       pop: 1
-
-  string-content:
-    - meta_prepend: true
-    - match: (\$\$)(?:restProps|props|slots)\b
-      scope: meta.interpolation.js variable.language.dollar.js
-      captures:
-        1: punctuation.definition.variable.js
-      push:
-        - clear_scopes: 1
-        - meta_include_prototype: false
-        - match: ''
-          pop: 1

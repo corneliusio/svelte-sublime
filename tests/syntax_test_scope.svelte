@@ -573,13 +573,13 @@
     { "$$slots" "$$restProps" "$$props" }
 /*  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
 /*    ^ meta.string.js string.quoted.double.js punctuation.definition.string.begin.js
-/*     ^^^^^^^ meta.string.js meta.interpolation.js variable.language.dollar.js - string
+/*     ^^^^^^^ meta.string.js string.quoted.double.js - variable
 /*            ^ meta.string.js string.quoted.double.js punctuation.definition.string.end.js
 /*              ^ meta.string.js string.quoted.double.js punctuation.definition.string.begin.js
-/*               ^^^^^^^^^^^ meta.string.js meta.interpolation.js variable.language.dollar.js - string
+/*               ^^^^^^^^^^^ meta.string.js string.quoted.double.js - variable
 /*                          ^ meta.string.js string.quoted.double.js punctuation.definition.string.end.js
 /*                            ^ meta.string.js string.quoted.double.js punctuation.definition.string.begin.js
-/*                             ^^^^^^^ meta.string.js meta.interpolation.js variable.language.dollar.js - string
+/*                             ^^^^^^^ meta.string.js string.quoted.double.js - variable
 /*                                    ^ meta.string.js string.quoted.double.js punctuation.definition.string.end.js
 
 ###[ INTERPOLATED STYLE ATTRIBUTES ]###########################################
