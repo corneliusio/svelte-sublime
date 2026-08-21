@@ -751,3 +751,188 @@ let key: K;
 let c: T;
 /* <- source.ts.embedded.html
 </script>
+###[ TYPESCRIPT EXPRESSIONS ]##################################################
+
+    {value as string}
+/*  ^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*   ^^^^^ source.js.embedded.svelte variable.other.readwrite.js
+/*         ^^ keyword.operator.type.js
+/*            ^^^^^^ support.type.primitive.string.js
+/*                  ^ punctuation.section.embedded.end.svelte
+
+    {value as string}<em>contained</em>
+/*                   ^^^^ meta.tag - meta.embedded.block.svelte
+
+    {(e: Event) => handler(e)}
+/*  ^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*   ^ punctuation.section.group.begin.js
+/*    ^ variable.parameter.function.js
+/*     ^ punctuation.separator.type.js
+/*       ^^^^^ support.class.js
+/*            ^ punctuation.section.group.end.js
+/*              ^^ keyword.declaration.function.arrow.js
+/*                 ^^^^^^^ variable.function.js
+/*                         ^ variable.other.readwrite.js
+/*                           ^ punctuation.section.embedded.end.svelte
+
+    {fn<Result>(value)}
+/*   ^^ variable.function.js
+/*     ^ punctuation.definition.generic.begin.js
+/*      ^^^^^^ support.class.js
+/*            ^ punctuation.definition.generic.end.js
+/*             ^ punctuation.section.group.begin.js
+/*              ^^^^^ variable.other.readwrite.js
+/*                   ^ punctuation.section.group.end.js
+
+    {#each (items as Item[]) as item, index (item.id)}<span>{item}</span>{/each}
+/*  ^ punctuation.section.embedded.begin.svelte
+/*   ^^^^^ keyword.control.loop.each.svelte
+/*         ^ punctuation.section.group.begin.js
+/*          ^^^^^ variable.other.readwrite.js
+/*                ^^ keyword.operator.type.js
+/*                   ^^^^ support.class.js
+/*                       ^^ meta.type.js
+/*                         ^ punctuation.section.group.end.js
+/*                           ^^ keyword.operator.assignment.as.svelte
+/*                              ^^^^ variable.other.readwrite.js
+/*                                  ^ punctuation.separator.comma.svelte
+/*                                    ^^^^^ variable.other.readwrite.js
+/*                                          ^ punctuation.section.group.begin.js
+/*                                           ^^^^ variable.other.readwrite.js
+/*                                               ^ punctuation.accessor.js
+/*                                                   ^ punctuation.section.embedded.end.svelte
+
+    {#each items as Item[] as item}<span>{item}</span>{/each}
+/*   ^^^^^ keyword.control.loop.each.svelte
+/*         ^^^^^ variable.other.readwrite.js
+/*               ^^ keyword.operator.type.js
+/*                  ^^^^ support.class.js
+/*                      ^^ meta.type.js
+/*                         ^^ keyword.operator.assignment.as.svelte
+/*                            ^^^^ variable.other.readwrite.js
+/*                                ^ punctuation.section.embedded.end.svelte
+
+###[ RENDER TAGS ]#############################################################
+
+    {@render row(item)}
+/*  ^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*  ^ punctuation.section.embedded.begin.svelte
+/*   ^^^^^^^ support.function.svelte
+/*           ^^^ variable.function.js
+/*              ^ punctuation.section.group.begin.js
+/*               ^^^^ variable.other.readwrite.js
+/*                   ^ punctuation.section.group.end.js
+/*                    ^ punctuation.section.embedded.end.svelte
+
+    {@render maybe?.()}
+/*   ^^^^^^^ support.function.svelte
+/*           ^^^^^ variable.function.js
+/*                ^^ punctuation.accessor
+/*                    ^ punctuation.section.embedded.end.svelte
+
+###[ ATTACHMENTS ]#############################################################
+
+<div {@attach tooltip(content)}></div>
+/*   ^ punctuation.section.embedded.begin.svelte
+/*    ^^^^^^^ support.function.svelte
+/*            ^^^^^^^ variable.function.js
+/*                    ^^^^^^^ variable.other.readwrite.js
+/*                            ^ punctuation.section.embedded.end.svelte
+
+<Comp {@attach fn} />
+/*     ^^^^^^^ support.function.svelte
+/*             ^^ variable.other.readwrite.js
+/*               ^ punctuation.section.embedded.end.svelte
+
+###[ DECLARATION TAGS ]########################################################
+
+    {let sum = a + b}
+/*  ^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*   ^^^ keyword.declaration.js
+/*       ^^^ meta.binding.name.js variable.other.readwrite.js
+/*           ^ keyword.operator.assignment.js
+/*             ^ variable.other.readwrite.js
+/*               ^ keyword.operator.arithmetic.js
+/*                  ^ punctuation.section.embedded.end.svelte
+
+    {const {width, height} = box}
+/*   ^^^^^ keyword.declaration.js
+/*         ^ punctuation.section.mapping.begin.js
+/*          ^^^^^ variable.other.readwrite.js
+/*               ^ punctuation.separator.comma.js
+/*                 ^^^^^^ variable.other.readwrite.js
+/*                       ^ punctuation.section.mapping.end.js
+/*                         ^ keyword.operator.assignment.js
+/*                           ^^^ variable.other.readwrite.js
+/*                              ^ punctuation.section.embedded.end.svelte
+
+    {const area: number = width * height}
+/*   ^^^^^ keyword.declaration.js
+/*         ^^^^ meta.binding.name.js variable.other.readwrite.js
+/*             ^ punctuation.separator.type.js
+/*               ^^^^^^ support.type.primitive.number.js
+/*                      ^ keyword.operator.assignment.js
+/*                                      ^ punctuation.section.embedded.end.svelte
+
+    {@const {a, b} = obj}
+/*   ^^^^^^ support.function.svelte
+/*          ^ punctuation.section.mapping.begin.js
+/*           ^ variable.other.readwrite.js
+/*                 ^ keyword.operator.assignment.js
+/*                   ^^^ variable.other.readwrite.js
+/*                      ^ punctuation.section.embedded.end.svelte
+
+###[ SNIPPETS ]################################################################
+
+    {#snippet figure(image)}
+/*  ^ punctuation.section.embedded.begin.svelte
+/*   ^^^^^^^^ keyword.control.snippet.begin.svelte
+/*            ^^^^^^ entity.name.function.svelte
+/*                  ^ punctuation.section.group.begin.js
+/*                   ^^^^^ meta.function.parameters.js variable.parameter.function.js
+/*                        ^ punctuation.section.group.end.js
+/*                         ^ punctuation.section.embedded.end.svelte
+        <figure>{@render nested()}</figure>
+/*      ^^^^^^^^ meta.tag
+/*               ^^^^^^^ support.function.svelte
+    {/snippet}
+/*  ^ punctuation.section.embedded.begin.svelte
+/*   ^^^^^^^^ keyword.control.snippet.end.svelte
+/*           ^ punctuation.section.embedded.end.svelte
+
+    {#snippet row(item: Item, index: number = 0)}
+/*            ^^^ entity.name.function.svelte
+/*                ^^^^ variable.parameter.function.js
+/*                    ^ punctuation.separator.type.js
+/*                      ^^^^ support.class.js
+/*                          ^ punctuation.separator.parameter.function.js
+/*                            ^^^^^ variable.parameter.function.js
+/*                                 ^ punctuation.separator.type.js
+/*                                   ^^^^^^ support.type.primitive.number.js
+/*                                          ^ keyword.operator.assignment.js
+/*                                            ^ constant.numeric
+/*                                             ^ punctuation.section.group.end.js
+/*                                              ^ punctuation.section.embedded.end.svelte
+    {/snippet}
+
+    {#snippet $row(item)}
+/*            ^^^^ entity.name.function.svelte
+/*                ^ punctuation.section.group.begin.js
+/*                 ^^^^ variable.parameter.function.js
+/*                     ^ punctuation.section.group.end.js
+    {/snippet}
+
+    {#snippet pair<T>(a: T, b: T)}
+/*            ^^^^ entity.name.function.svelte
+/*                ^ punctuation.definition.generic.begin.js
+/*                 ^ variable.parameter
+/*                  ^ punctuation.definition.generic.end.js
+/*                   ^ punctuation.section.group.begin.js
+/*                    ^ variable.parameter.function.js
+/*                     ^ punctuation.separator.type.js
+/*                       ^ support.class.js
+/*                        ^ punctuation.separator.parameter.function.js
+/*                          ^ variable.parameter.function.js
+/*                              ^ punctuation.section.group.end.js
+/*                               ^ punctuation.section.embedded.end.svelte
+    {/snippet}
