@@ -19,8 +19,19 @@ variables:
 
   # svelte
   svelte_attribute_name: '[[:alnum:]_-]+'
-  svelte_component_name: '[[:upper:]][[:alnum:]_]*'
-  svelte_tag_name: '[[:alpha:]][[:alnum:]_]*'
+  svelte_component_name: '[[:upper:]][[:alnum:]_$]*'
+  svelte_tag_name: '[[:alpha:]][[:alnum:]_$]*'
+  svelte_member_name: '[[:alnum:]_$]+'
+  # `={expr}`, `="{expr}"` or `='{expr}'` with nothing else in the quotes
+  # (quoted forms: single line, two levels of nested braces)
+  svelte_expression_value_ahead: |-
+    (?x: \s* = \s* (?:
+      \{
+    | " \{ (?: [^"{}] | \{ (?: [^{}] | \{ [^{}]* \} )* \} )* \} "
+    | ' \{ (?: [^'{}] | \{ (?: [^{}] | \{ [^{}]* \} )* \} )* \} '
+    ))
+  # everything HTML accepts as attribute name, except directive separators
+  svelte_event_name: '[^{{attribute_name_break_char}}:"''`<{]*'
   svelte_ts_identifier: '[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*'
 
 contexts:
@@ -46,10 +57,12 @@ contexts:
 
   tag-attributes:
     - meta_prepend: true
+    - include: svelte-tag-comments
     - include: svelte-string-attributes
     - include: svelte-storage-attributes
     - include: svelte-style-attributes
     - include: svelte-variable-attributes
+    - include: svelte-event-attributes
 
   tag-generic-attribute-name:
     - meta_prepend: true
@@ -60,6 +73,36 @@ contexts:
     - include: svelte-interpolations
 
 ###[ HTML SCRIPT TAG ATTRIBUTES ]##############################################
+
+  script-javascript-content:
+    # Copy of HTML.sublime-syntax#script-javascript-content (identical in
+    # v4143 and master), embedding a JavaScript syntax which knows about
+    # runes. Keep in sync with upstream.
+    - meta_include_prototype: false
+    - match: \s*((<!\[)(CDATA)(\[))
+      captures:
+        1: meta.tag.sgml.cdata.html
+        2: punctuation.definition.tag.begin.html
+        3: keyword.declaration.cdata.html
+        4: punctuation.definition.tag.begin.html
+      pop: 1  # make sure to match only once
+      embed: scope:source.js.script.svelte
+      embed_scope: meta.tag.sgml.cdata.html source.js.embedded.html
+      escape: \]\]>
+      escape_captures:
+        0: meta.tag.sgml.cdata.html punctuation.definition.tag.end.html
+    - match: '{{script_content_begin}}'
+      captures:
+        1: comment.block.html punctuation.definition.comment.begin.html
+      pop: 1  # make sure to match only once
+      embed: scope:source.js.script.svelte
+      embed_scope: source.js.embedded.html
+      escape: '{{script_content_end}}'
+      escape_captures:
+        1: source.js.embedded.html
+        2: comment.block.html punctuation.definition.comment.end.html
+        3: source.js.embedded.html
+        4: comment.block.html punctuation.definition.comment.end.html
 
   script-common:
     - meta_prepend: true
@@ -274,11 +317,23 @@ contexts:
 
   script-typescript-content:
     - meta_include_prototype: false
+    - match: \s*((<!\[)(CDATA)(\[))
+      captures:
+        1: meta.tag.sgml.cdata.html
+        2: punctuation.definition.tag.begin.html
+        3: keyword.declaration.cdata.html
+        4: punctuation.definition.tag.begin.html
+      pop: 1  # make sure to match only once
+      embed: scope:source.ts.script.svelte
+      embed_scope: meta.tag.sgml.cdata.html source.ts.embedded.html
+      escape: \]\]>
+      escape_captures:
+        0: meta.tag.sgml.cdata.html punctuation.definition.tag.end.html
     - match: '{{script_content_begin}}'
       captures:
         1: comment.block.html punctuation.definition.comment.begin.html
       pop: 1  # make sure to match only once
-      embed: scope:source.ts
+      embed: scope:source.ts.script.svelte
       embed_scope: source.ts.embedded.html
       escape: '{{script_content_end}}'
       escape_captures:
@@ -530,27 +585,83 @@ contexts:
 ###[ SVELTE COMPONENTS ]#######################################################
 
   svelte-components:
-    - match: (</?)((?:{{svelte_component_name}}|{{svelte_tag_name}}([.:]){{svelte_tag_name}}){{tag_name_break}})
-      captures:
-        1: punctuation.definition.tag.begin.html
-        2: entity.name.tag.component.svelte
-        3: punctuation.accessor.svelte
-      push: svelte-component-body
+    # A capitalised tag or a tag using dot notation (any depth) is a component:
+    # <Widget>, <my.stuff>, <Foo.Bar.Baz>. Special elements use a colon.
+    - match: (</?)(?=(?:{{svelte_component_name}}|{{svelte_tag_name}}[.:]{{svelte_member_name}})(?:[.:]{{svelte_member_name}})*{{tag_name_break}})
+      scope: punctuation.definition.tag.begin.html
+      push:
+        - svelte-component-body
+        - svelte-component-name
+
+  svelte-component-name:
+    - meta_content_scope: entity.name.tag.component.svelte
+    - match: '[.:]'
+      scope: punctuation.accessor.svelte
+    - match: '{{tag_name_break}}'
+      pop: 1
 
   svelte-component-body:
     - meta_scope: meta.tag.component.html
     - include: tag-end-maybe-self-closing
-    # all tag-attributes (except `event` and `style`)
+    - include: svelte-tag-comments
+    # all tag-attributes (except HTML `event` and `style`)
     - include: svelte-string-attributes
     - include: svelte-storage-attributes
     - include: svelte-style-attributes
     - include: svelte-variable-attributes
+    - include: svelte-event-attributes
     - include: tag-id-attribute
     - include: tag-class-attribute
     - include: tag-href-attribute
     - include: tag-generic-attribute
 
+###[ SVELTE TAG COMMENTS ]#####################################################
+
+  svelte-tag-comments:
+    # JavaScript-style comments between attributes
+    # https://svelte.dev/docs/svelte/basic-markup#Comments
+    # `//>` is not a comment, so a stray one can't swallow the tag end
+    - match: //(?!>)
+      scope: punctuation.definition.comment.svelte
+      push: svelte-line-comment-body
+    - match: /\*
+      scope: punctuation.definition.comment.begin.svelte
+      push: svelte-block-comment-body
+
+  svelte-line-comment-body:
+    - meta_include_prototype: false
+    - meta_scope: comment.line.double-slash.svelte
+    - match: \n
+      pop: 1
+
+  svelte-block-comment-body:
+    - meta_include_prototype: false
+    - meta_scope: comment.block.svelte
+    - match: \*/
+      scope: punctuation.definition.comment.end.svelte
+      pop: 1
+
 ###[ SVELTE TAG ATTRIBUTES ]###################################################
+
+  svelte-event-attributes:
+    # Any attribute whose name starts with `on` and whose value is a single
+    # expression is an event attribute (mirrors the compiler's
+    # `is_event_attribute`). Names are case sensitive: `onclick` listens to
+    # `click`, `onClick` to `Click`. String values are plain (HTML) attributes
+    # and left to the inherited contexts.
+    # https://svelte.dev/docs/svelte/basic-markup#Events
+    - match: (on)({{svelte_event_name}})(?={{svelte_expression_value_ahead}})
+      captures:
+        1: support.function.svelte
+        2: string.unquoted.svelte
+      push:
+        - tag-event-attribute-meta
+        - tag-generic-attribute-assignment
+        - svelte-event-attribute-name
+
+  svelte-event-attribute-name:
+    - meta_scope: entity.other.attribute-name.event.svelte
+    - include: immediately-pop
 
   svelte-string-attributes:
     - match: ((?i:on|bind|class|style))(:)({{svelte_attribute_name}})
@@ -697,12 +808,9 @@ contexts:
     - match: /await\b
       scope: keyword.control.await.end.svelte
       pop: 1
-    - match: :catch\b
+    - match: :(?:catch|then)\b
       scope: keyword.control.flow.svelte
-      pop: 1
-    - match: :then\b
-      scope: keyword.control.flow.svelte
-      pop: 1
+      set: svelte-embedded-variable
     # key
     - match: '[#/]key\b'
       scope: keyword.other.svelte
@@ -731,12 +839,15 @@ contexts:
     - include: else-pop
 
   svelte-embedded-variable:
+    # a binding pattern with an optional type annotation: item, { id }: Item
     - meta_include_prototype: false
     - match: (?=[\[{])
-      set: scope:source.js.embedded.svelte#expression-no-comma
+      set:
+        - scope:source.js.embedded.svelte#ts-type-annotation
+        - scope:source.js.embedded.svelte#expression-no-comma
     - match: \b[_$\p{L}\p{Nl}][_$\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*\b
       scope: variable.other.readwrite.js
-      pop: 1
+      set: scope:source.js.embedded.svelte#ts-type-annotation
     - include: else-pop
 
   svelte-snippet-name:

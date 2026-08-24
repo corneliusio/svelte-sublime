@@ -6,6 +6,21 @@ hidden: true
 
 extends: Packages/JavaScript/TypeScript.sublime-syntax
 
+variables:
+  # the block's `as`: not followed by another `as` outside of brackets, e.g.
+  # the ones of a key expression: `as item (item.id as string)`. Limits: two
+  # levels of bracket nesting, string literals are not skipped and a later
+  # `as` on another line is invisible (matching is line based).
+  svelte_each_as_ahead: |-
+    (?x: (?= as{{identifier_break}}
+      (?! (?: [^{}(\[]
+            | \( (?: [^()] | \( [^()]* \) )* \)
+            | \[ (?: [^\[\]] | \[ [^\[\]]* \] )* \]
+            | \{ (?: [^{}] | \{ [^{}]* \} )* \}
+          )*
+          \s as{{identifier_break}} )
+    ))
+
 contexts:
 
   # required until ST4176
@@ -14,15 +29,19 @@ contexts:
       push: [ expression-end, expression-begin ]
 
   # each-block source expressions must stop at the block's `as` keyword,
-  # which TypeScript would otherwise consume as a type assertion; only the
-  # last `as` before the closing brace is the block's own, so earlier ones
-  # keep their assertion meaning: {#each items as Item[] as item}
+  # which TypeScript would otherwise consume as a type assertion. Like the
+  # compiler (which parses greedily, then gives the trailing assertion back),
+  # the last top-level `as` is the block's own, earlier ones keep their
+  # assertion meaning: {#each items as Item[] as item}
   svelte-each-expression:
     - match: (?=\S)
       set: [ svelte-each-expression-end, expression-begin ]
 
   svelte-each-expression-end:
-    - match: (?=as{{identifier_break}}(?![^{}]*\sas{{identifier_break}}))
+    # itemless blocks: {#each expression, index}
+    - match: (?=,)
+      pop: 1
+    - match: '{{svelte_each_as_ahead}}'
       pop: 1
     # mirrors ts-type-assertion, but with a guarded type-expression-end so
     # the block's own `as` is not consumed as a chained assertion
@@ -42,7 +61,7 @@ contexts:
 
   svelte-each-type-expression-end:
     # pops this context, ts-type-meta and svelte-each-expression-end
-    - match: (?=as{{identifier_break}}(?![^{}]*\sas{{identifier_break}}))
+    - match: '{{svelte_each_as_ahead}}'
       pop: 3
     - include: ts-type-expression-end
 
@@ -65,8 +84,54 @@ contexts:
 
   literal-variable:
     - meta_prepend: true
+    - include: svelte-runes
+    - include: svelte-special-variables
+
+  # Shared with the `<script>` syntaxes (see "for Svelte script" siblings).
+  svelte-special-variables:
     - match: (\$\$)(?:restProps|props|slots)\b
       scope: variable.language.dollar.js
       captures:
         1: punctuation.definition.variable.js
+      pop: 1
+
+  # https://svelte.dev/docs/svelte/what-are-runes
+  svelte-runes:
+    - match: (\$state)(?:(\.)(raw|snapshot|eager))?{{identifier_break}}
+      scope: meta.function-call.js
+      captures:
+        1: support.function.rune.svelte
+        2: punctuation.accessor.js
+        3: support.function.rune.svelte
+      pop: 1
+    - match: (\$derived)(?:(\.)(by))?{{identifier_break}}
+      scope: meta.function-call.js
+      captures:
+        1: support.function.rune.svelte
+        2: punctuation.accessor.js
+        3: support.function.rune.svelte
+      pop: 1
+    - match: (\$effect)(?:(\.)(pre|tracking|root|pending))?{{identifier_break}}
+      scope: meta.function-call.js
+      captures:
+        1: support.function.rune.svelte
+        2: punctuation.accessor.js
+        3: support.function.rune.svelte
+      pop: 1
+    - match: (\$props)(?:(\.)(id))?{{identifier_break}}
+      scope: meta.function-call.js
+      captures:
+        1: support.function.rune.svelte
+        2: punctuation.accessor.js
+        3: support.function.rune.svelte
+      pop: 1
+    - match: (\$inspect)(?:(\.)(trace))?{{identifier_break}}
+      scope: meta.function-call.js
+      captures:
+        1: support.function.rune.svelte
+        2: punctuation.accessor.js
+        3: support.function.rune.svelte
+      pop: 1
+    - match: \$(?:bindable|host){{identifier_break}}
+      scope: meta.function-call.js support.function.rune.svelte
       pop: 1
