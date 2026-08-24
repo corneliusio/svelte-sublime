@@ -646,11 +646,11 @@ width: {width}px"></div>
 /*                     ^ meta.embedded.block.svelte source.js.embedded.svelte */
 
 <Comp onclick="not js" />
-/*      ^ entity.other.attribute-name.html - entity.other.attribute-name.event.html */
+/*      ^ entity.other.attribute-name.html - entity.other.attribute-name.event */
 /*               ^ meta.string.html - source.js.embedded.html */
 
 <div onclick="alert('ok')"></div>
-/*     ^ entity.other.attribute-name.event.html */
+/*     ^ entity.other.attribute-name.event.html - entity.other.attribute-name.event.svelte */
 /*              ^ source.js.embedded.html */
 
 ###[ LANG / TYPE ATTRIBUTE DECIDERS ]##########################################
@@ -936,3 +936,542 @@ let c: T;
 /*                              ^ punctuation.section.group.end.js
 /*                               ^ punctuation.section.embedded.end.svelte
     {/snippet}
+
+###[ IN-TAG COMMENTS ]#########################################################
+
+<div
+    // this is a comment!
+/*  ^^ comment.line.double-slash.svelte punctuation.definition.comment.svelte */
+/*  ^^^^^^^^^^^^^^^^^^^^^ comment.line.double-slash.svelte - entity - meta.attribute-with-value */
+    data-foo="bar" /* block */ id="x"
+/*  ^^^^^^^^ entity.other.attribute-name.html */
+/*                 ^^ comment.block.svelte punctuation.definition.comment.begin.svelte */
+/*                 ^^^^^^^^^^^ comment.block.svelte - entity */
+/*                          ^^ comment.block.svelte punctuation.definition.comment.end.svelte */
+/*                             ^^ entity.other.attribute-name.id.html */
+>
+/* <- meta.tag punctuation.definition.tag.end.html */
+    foo bar
+</div>
+
+<Comp // trailing {notAnExpression}
+/*    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.tag.component.html comment.line.double-slash.svelte - meta.embedded */
+    /* multi
+       line */ value={x} />
+/*  ^^^^^^^^^^ comment.block.svelte */
+/*          ^^ comment.block.svelte punctuation.definition.comment.end.svelte */
+/*             ^^^^^ entity.other.attribute-name.html */
+/*                   ^^^ meta.embedded.block.svelte */
+/*                       ^^ punctuation.definition.tag.end.html */
+
+<Foo bar={x}//>
+/*          ^^ meta.tag.component.html - comment
+/*           ^^ punctuation.definition.tag.end.html
+<a href=//not.a/comment>link</a>
+/*                     ^ punctuation.definition.tag.end.html
+/*                      ^^^^ - meta.tag - comment
+/*      ^^^^^^^^^^^^^^^ meta.attribute-with-value.href.html meta.string.html - comment
+<div data-x=//not-a/comment title=x></div>
+/*          ^^^^^^^^^^^^^^ meta.attribute-with-value.html meta.string.html string.unquoted.html - comment
+/*                          ^^^^^ entity.other.attribute-name.html
+
+###[ MEMBER COMPONENTS ]#######################################################
+
+    <Foo.Bar.Baz prop={x} />
+/*  ^^^^^^^^^^^^^^^^^^^^^^^^ meta.tag.component.html
+/*  ^ punctuation.definition.tag.begin.html - entity
+/*   ^^^^^^^^^^^ entity.name.tag.component.svelte
+/*      ^ punctuation.accessor.svelte
+/*          ^ punctuation.accessor.svelte
+/*               ^^^^ entity.other.attribute-name.html
+/*                        ^^ punctuation.definition.tag.end.html
+    <foo.bar.baz>{x}</foo.bar.baz>
+/*  ^^^^^^^^^^^^^ meta.tag.component.html
+/*   ^^^^^^^^^^^ entity.name.tag.component.svelte
+/*      ^ punctuation.accessor.svelte
+/*          ^ punctuation.accessor.svelte
+/*               ^^^ meta.embedded.block.svelte - meta.tag
+/*                  ^^^^^^^^^^^^^^ meta.tag.component.html
+/*                  ^^ punctuation.definition.tag.begin.html
+/*                    ^^^^^^^^^^^ entity.name.tag.component.svelte
+/*                               ^ punctuation.definition.tag.end.html
+    <Foo$ /><Foo.$bar.Baz />
+/*   ^^^^ entity.name.tag.component.svelte
+/*           ^^^^^^^^^^^^ entity.name.tag.component.svelte
+/*              ^ punctuation.accessor.svelte
+/*                   ^ punctuation.accessor.svelte
+    <svelte:element this={tag} />
+/*   ^^^^^^^^^^^^^^ entity.name.tag.component.svelte
+/*         ^ punctuation.accessor.svelte
+/*                  ^^^^ entity.other.attribute-name.html
+
+###[ EVENT ATTRIBUTES ]########################################################
+
+<button onclick={handler} onFoo={bar} oncustom-event={baz}>x</button>
+/*      ^^^^^^^^^^^^^^^^^ meta.attribute-with-value.event.html
+/*      ^^^^^^^ entity.other.attribute-name.event.svelte - entity.other.attribute-name.event.html
+/*      ^^ support.function.svelte
+/*        ^^^^^ string.unquoted.svelte
+/*             ^ punctuation.separator.key-value.html
+/*              ^^^^^^^^^ meta.string.html meta.embedded.block.svelte
+/*               ^^^^^^^ variable.other.readwrite.js
+/*                        ^^^^^ entity.other.attribute-name.event.svelte
+/*                        ^^ support.function.svelte
+/*                          ^^^ string.unquoted.svelte
+/*                                    ^^^^^^^^^^^^^^ entity.other.attribute-name.event.svelte
+/*                                      ^^^^^^^^^^^^ string.unquoted.svelte
+/*                                                        ^ punctuation.definition.tag.end.html
+<Comp onclick={fn} ontoggle={fn2} on:legacy={fn3} />
+/*    ^^^^^^^ entity.other.attribute-name.event.svelte
+/*    ^^ support.function.svelte
+/*      ^^^^^ string.unquoted.svelte
+/*                 ^^^^^^^^ entity.other.attribute-name.event.svelte
+/*                                ^^^^^^^^^ entity.other.attribute-name.svelte - entity.other.attribute-name.event.svelte
+/*                                ^^ support.function.svelte
+/*                                  ^ punctuation.separator.svelte
+/*                                   ^^^^^^ string.unquoted.svelte
+<input bind:value={name} /><Comp bind:this={el} bind:count />
+/*     ^^^^^^^^^^ entity.other.attribute-name.svelte
+/*     ^^^^ support.function.svelte
+/*         ^ punctuation.separator.svelte
+/*          ^^^^^ string.unquoted.svelte
+/*                ^^^^^^ meta.embedded.block.svelte
+/*                               ^^^^^^^^^ entity.other.attribute-name.svelte
+/*                                         ^^^^ meta.embedded.block.svelte
+/*                                              ^^^^^^^^^^ entity.other.attribute-name.svelte
+/*                                                   ^^^^^ string.unquoted.svelte
+<svelte:window onkeydown={onKeyDown} />
+/*             ^^^^^^^^^ entity.other.attribute-name.event.svelte
+/*                        ^^^^^^^^^ variable.other.readwrite.js
+<div ONCLICK={x} on={y} once={z} onclick="alert(1)"></div>
+/*   ^^^^^^^ entity.other.attribute-name.event.html - entity.other.attribute-name.event.svelte
+/*               ^^ entity.other.attribute-name.event.svelte support.function.svelte
+/*                 ^ punctuation.separator.key-value.html - entity
+/*                      ^^^^ entity.other.attribute-name.event.svelte
+/*                               ^^^^^^^ entity.other.attribute-name.event.html - entity.other.attribute-name.event.svelte
+/*                                        ^^^^^^^^ source.js.embedded.html
+<button onclick = {handler} oninput="{handle}"></button>
+/*      ^^^^^^^ entity.other.attribute-name.event.svelte
+/*              ^ punctuation.separator.key-value.html
+/*                ^^^^^^^^^ meta.embedded.block.svelte
+/*                          ^^^^^^^ entity.other.attribute-name.event.svelte
+/*                                   ^^^^^^^^ meta.embedded.block.svelte
+<Comp onclick="not js" onfoo=bar onlabel="{value} suffix" onmix="x{y}" />
+/*    ^^^^^^^ entity.other.attribute-name.html - entity.other.attribute-name.event
+/*                     ^^^^^ entity.other.attribute-name.html - entity.other.attribute-name.event
+/*                               ^^^^^^^ entity.other.attribute-name.html - entity.other.attribute-name.event
+/*                                        ^^^^^^^ meta.embedded.block.svelte
+/*                                                        ^^^^^ entity.other.attribute-name.html - entity.other.attribute-name.event
+<button onclick="{() => ({ nested: { value } })}" on"x"={y}>x</button>
+/*      ^^^^^^^ entity.other.attribute-name.event.svelte
+/*               ^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*                                                  ^^ entity.other.attribute-name.html - entity.other.attribute-name.event
+/*                                                    ^ invalid.illegal.attribute-name.html
+<Comp on-click={h} on1={x} onSelect='{s}' />
+/*    ^^^^^^^^ entity.other.attribute-name.event.svelte
+/*      ^^^^^^ string.unquoted.svelte
+/*                 ^^^ entity.other.attribute-name.event.svelte
+/*                         ^^^^^^^^ entity.other.attribute-name.event.svelte
+/*                                   ^^^ meta.embedded.block.svelte
+
+###[ RUNES ]###################################################################
+
+<script>
+    let count = $state(0);
+/*  ^^^^^^^^^^^^^^^^^^^^^^ source.js.embedded.html */
+/*              ^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                    ^ punctuation.section.group.begin.js */
+/*                     ^ constant.numeric.value.js */
+    let raw = $state.raw([]);
+/*            ^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                  ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*                   ^^^ meta.function-call.js support.function.rune.svelte */
+/*                      ^ punctuation.section.group.begin.js */
+    let copy = $state.snapshot(count), eager = $state.eager(0);
+/*             ^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                   ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*                    ^^^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                            ^ punctuation.section.group.begin.js */
+/*                             ^^^^^ variable.other.readwrite.js */
+/*                                             ^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                                                   ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*                                                    ^^^^^ meta.function-call.js support.function.rune.svelte */
+    let double = $derived(count * 2);
+/*               ^^^^^^^^ support.function.rune.svelte */
+/*                        ^^^^^ variable.other.readwrite.js */
+    let total = $derived.by(() => count);
+/*              ^^^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                      ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*                       ^^ meta.function-call.js support.function.rune.svelte */
+/*                             ^^ keyword.declaration.function.arrow.js */
+    let { a, b = 1 } = $props();
+/*                     ^^^^^^ support.function.rune.svelte */
+/*                           ^^ meta.group.js */
+    let uid = $props.id();
+/*            ^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                  ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*                   ^^ meta.function-call.js support.function.rune.svelte */
+    let value = $bindable();
+/*              ^^^^^^^^^ support.function.rune.svelte */
+    $effect(() => { console.log(count); });
+/*  ^^^^^^^ support.function.rune.svelte */
+/*         ^ punctuation.section.group.begin.js */
+/*                  ^^^^^^^ support.type.object.console.js */
+    $effect.pre(() => {});
+/*  ^^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*         ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*          ^^^ meta.function-call.js support.function.rune.svelte */
+    $effect.root(() => {}); $effect.tracking(); $effect.pending();
+/*  ^^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*         ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*          ^^^^ meta.function-call.js support.function.rune.svelte */
+/*                          ^^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                                 ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*                                  ^^^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                                              ^^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                                                     ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*                                                      ^^^^^^^ meta.function-call.js support.function.rune.svelte */
+    $inspect(count).with(console.trace);
+/*  ^^^^^^^^ support.function.rune.svelte */
+/*           ^^^^^ variable.other.readwrite.js */
+/*                  ^^^^ variable.function.js - support.function.rune.svelte */
+    $inspect.trace('label');
+/*  ^^^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*          ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*           ^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                ^ punctuation.section.group.begin.js */
+    const host = $host();
+/*               ^^^^^ support.function.rune.svelte */
+    let notRune = $stateful + $count + $state_ + $$props;
+/*                ^^^^^^^^^ variable.other.dollar.js - support.function.rune.svelte */
+/*                            ^^^^^^ variable.other.dollar.js - support.function.rune.svelte */
+/*                                     ^^^^^^^ variable.other.dollar.js - support.function.rune.svelte */
+/*                                               ^^^^^^^ variable.language.dollar.js */
+    let member = obj.$state;
+/*                   ^^^^^^ - support.function.rune.svelte */
+</script>
+
+<script lang="ts">
+    let count: number = $state(0);
+/*  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.ts.embedded.html */
+/*           ^ punctuation.separator.type.js */
+/*             ^^^^^^ support.type.primitive.number.js */
+/*                      ^^^^^^ meta.function-call.js support.function.rune.svelte */
+    let items = $state.raw<Item[]>([]);
+/*              ^^^^^^ meta.function-call.js support.function.rune.svelte */
+/*                    ^ meta.function-call.js punctuation.accessor.js - support.function */
+/*                     ^^^ meta.function-call.js support.function.rune.svelte */
+/*                        ^ punctuation.definition.generic.begin.js */
+/*                         ^^^^ support.class.js */
+/*                               ^ punctuation.definition.generic.end.js */
+    let { a, b }: Props = $props();
+/*              ^ punctuation.separator.type.js */
+/*                ^^^^^ support.class.js */
+/*                        ^^^^^^ support.function.rune.svelte */
+    let done = $derived<boolean>(count > 1);
+/*             ^^^^^^^^ support.function.rune.svelte */
+/*                      ^^^^^^^ support.type.primitive.boolean.js */
+</script>
+
+<script module>
+/*      ^^^^^^ entity.other.attribute-name.html */
+    let shared = $state.raw(0);
+/*               ^^^^^^ source.js.embedded.html support.function.rune.svelte */
+</script>
+
+<script>
+<![CDATA[
+/* <- meta.tag.sgml.cdata.html punctuation.definition.tag.begin.html */
+    let inCdata = $state(1);
+/*  ^^^^^^^^^^^^^^^^^^^^^^^^ meta.tag.sgml.cdata.html source.js.embedded.html */
+/*                ^^^^^^ support.function.rune.svelte */
+]]>
+/* <- meta.tag.sgml.cdata.html punctuation.definition.tag.end.html */
+</script>
+
+<script lang="ts">
+<![CDATA[
+    let inCdata: number = $state(1);
+/*  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.tag.sgml.cdata.html source.ts.embedded.html */
+/*                        ^^^^^^ support.function.rune.svelte */
+]]>
+/* <- meta.tag.sgml.cdata.html punctuation.definition.tag.end.html */
+</script>
+
+{#if $effect.pending()}
+/*   ^^^^^^^ meta.function-call.js support.function.rune.svelte
+/*          ^ meta.function-call.js punctuation.accessor.js - support.function
+/*           ^^^^^^^ meta.function-call.js support.function.rune.svelte
+/*                  ^^ meta.group.js
+/*                    ^ punctuation.section.embedded.end.svelte
+    <p>{$state.snapshot(value)}</p>
+/*      ^^^^^^ meta.function-call.js support.function.rune.svelte
+/*            ^ meta.function-call.js punctuation.accessor.js - support.function
+/*             ^^^^^^^^ meta.function-call.js support.function.rune.svelte
+/*                      ^^^^^ variable.other.readwrite.js
+{/if}
+
+###[ CLASS ARRAYS AND OBJECTS ]################################################
+
+<div class={["a", cond && "b"]}></div>
+/*   ^^^^^ entity.other.attribute-name.class.html
+/*        ^ punctuation.separator.key-value.html
+/*         ^^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*         ^ punctuation.section.embedded.begin.svelte
+/*          ^^^^^^^^^^^^^^^^^^ meta.sequence.js
+/*          ^ punctuation.section.sequence.begin.js
+/*           ^^^ meta.string.js string.quoted.double.js
+/*              ^ punctuation.separator.comma.js
+/*                ^^^^ variable.other.readwrite.js
+/*                     ^^ keyword.operator.logical.js
+/*                        ^^^ meta.string.js string.quoted.double.js
+/*                           ^ punctuation.section.sequence.end.js
+/*                            ^ punctuation.section.embedded.end.svelte
+/*                             ^ punctuation.definition.tag.end.html
+<div class={{ a: true, b: cond }}></div>
+/*         ^^^^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*          ^^^^^^^^^^^^^^^^^^^^ meta.mapping.js
+/*          ^ punctuation.section.mapping.begin.js
+/*            ^ meta.mapping.key.js
+/*             ^ punctuation.separator.key-value.js
+/*               ^^^^ constant.language.boolean.true.js
+/*                   ^ punctuation.separator.comma.js
+/*                     ^ meta.mapping.key.js
+/*                        ^^^^ variable.other.readwrite.js
+/*                             ^ punctuation.section.mapping.end.js
+/*                              ^ punctuation.section.embedded.end.svelte
+/*                               ^ punctuation.definition.tag.end.html
+<Comp class={[base, { active }]} />
+/*    ^^^^^ entity.other.attribute-name.class.html
+/*           ^ punctuation.section.sequence.begin.js
+/*            ^^^^ variable.other.readwrite.js
+/*                  ^ punctuation.section.mapping.begin.js
+/*                    ^^^^^^ variable.other.readwrite.js
+/*                            ^ punctuation.section.sequence.end.js
+/*                             ^ punctuation.section.embedded.end.svelte
+/*                               ^^ punctuation.definition.tag.end.html
+
+###[ ITEMLESS EACH STATEMENTS ]################################################
+
+    {#each expression}...{/each}
+/*  ^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*   ^^^^^ keyword.control.loop.each.svelte
+/*         ^^^^^^^^^^ variable.other.readwrite.js
+/*                   ^ punctuation.section.embedded.end.svelte
+/*                       ^^^^^^^ meta.embedded.block.svelte
+/*                        ^^^^^ keyword.control.loop.end.svelte
+    {#each expression, index}...{/each}
+/*  ^^^^^^^^^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*   ^^^^^ keyword.control.loop.each.svelte
+/*         ^^^^^^^^^^ variable.other.readwrite.js
+/*                   ^ punctuation.separator.comma.svelte - punctuation.separator.comma.js
+/*                     ^^^^^ variable.other.readwrite.js
+/*                          ^ punctuation.section.embedded.end.svelte
+/*                              ^^^^^^^ meta.embedded.block.svelte
+/*                               ^^^^^ keyword.control.loop.end.svelte
+    {#each { length: 8 }, rank}
+/*   ^^^^^ keyword.control.loop.each.svelte
+/*         ^^^^^^^^^^^^^ meta.mapping.js
+/*         ^ punctuation.section.mapping.begin.js
+/*           ^^^^^^ meta.mapping.key.js
+/*                   ^ constant.numeric.value.js
+/*                     ^ punctuation.section.mapping.end.js
+/*                      ^ punctuation.separator.comma.svelte
+/*                        ^^^^ variable.other.readwrite.js
+/*                            ^ punctuation.section.embedded.end.svelte
+        {#each { length: 8 }, file}
+/*                            ^^^^ variable.other.readwrite.js
+            <div class:black={(rank + file) % 2 === 1}></div>
+/*               ^^^^^^^^^^^ entity.other.attribute-name.svelte
+/*                             ^^^^ variable.other.readwrite.js
+        {/each}
+/*       ^^^^^ keyword.control.loop.end.svelte
+    {/each}
+    {#each value as [number, string] as pair}
+/*               ^^ keyword.operator.type.js
+/*                  ^^^^^^^^^^^^^^^^ meta.type.js
+/*                   ^^^^^^ support.type.primitive.number.js
+/*                                   ^^ keyword.operator.assignment.as.svelte
+/*                                      ^^^^ variable.other.readwrite.js
+/*                                          ^ punctuation.section.embedded.end.svelte
+    {/each}
+    {#each value as { id: number } as item}{item.id}{/each}
+/*               ^^ keyword.operator.type.js
+/*                  ^^^^^^^^^^^^^^ meta.type.js
+/*                                 ^^ keyword.operator.assignment.as.svelte
+/*                                    ^^^^ variable.other.readwrite.js
+/*                                        ^ punctuation.section.embedded.end.svelte
+/*                                          ^^^^ variable.other.readwrite.js
+    {#each rows as row: Row}
+/*              ^^ keyword.operator.assignment.as.svelte
+/*                 ^^^ variable.other.readwrite.js
+/*                    ^ punctuation.separator.type.js
+/*                      ^^^ meta.type.js support.class.js
+/*                         ^ punctuation.section.embedded.end.svelte
+    {/each}
+    {#each rows as row: Row, i (row.id)}
+/*                    ^ punctuation.separator.type.js
+/*                      ^^^ meta.type.js support.class.js
+/*                         ^ punctuation.separator.comma.svelte
+/*                           ^ variable.other.readwrite.js
+/*                             ^ punctuation.section.group.begin.js
+/*                              ^^^ variable.other.readwrite.js
+/*                                    ^ punctuation.section.group.end.js
+/*                                     ^ punctuation.section.embedded.end.svelte
+    {/each}
+    {#each rows as row: A | B (row.id)}
+/*                    ^ punctuation.separator.type.js
+/*                      ^^^^^ meta.type.js
+/*                        ^ keyword.operator.type.union.js
+/*                            ^ punctuation.section.group.begin.js
+/*                             ^^^ variable.other.readwrite.js
+/*                                    ^ punctuation.section.embedded.end.svelte
+    {/each}
+    {#each rows as row: Map<string, number>}<p>x</p>{/each}
+/*                      ^^^ meta.type.js support.class.js
+/*                         ^ punctuation.definition.generic.begin.js
+/*                                ^ punctuation.separator.comma.js
+/*                                        ^ punctuation.definition.generic.end.js
+/*                                         ^ punctuation.section.embedded.end.svelte
+/*                                          ^^^ meta.tag - meta.embedded - meta.type
+    {#each items as item: {a: number}}<p>x</p>{/each}
+/*                        ^^^^^^^^^^^ meta.type.js meta.mapping.js
+/*                        ^ punctuation.section.mapping.begin.js
+/*                                  ^ punctuation.section.mapping.end.js
+/*                                   ^ punctuation.section.embedded.end.svelte
+/*                                    ^^^ meta.tag - meta.embedded - meta.type
+    {#each items as Array<{a: {b: number}}> as item}{item}{/each}
+/*               ^^ keyword.operator.type.js
+/*                  ^^^^^^^^^^^^^^^^^^^^^^^ meta.type.js
+/*                                          ^^ keyword.operator.assignment.as.svelte
+/*                                             ^^^^ variable.other.readwrite.js
+/*                                                 ^ punctuation.section.embedded.end.svelte
+    {#each value as { a: { b: string } } as item}{item}{/each}
+/*               ^^ keyword.operator.type.js
+/*                  ^^^^^^^^^^^^^^^^^^^^ meta.type.js
+/*                                       ^^ keyword.operator.assignment.as.svelte
+/*                                          ^^^^ variable.other.readwrite.js
+/*                                              ^ punctuation.section.embedded.end.svelte
+    {#each items
+/*   ^^^^^ keyword.control.loop.each.svelte */
+/*         ^^^^^ variable.other.readwrite.js */
+        as item: Item}
+/*      ^^ keyword.operator.assignment.as.svelte
+/*         ^^^^ variable.other.readwrite.js
+/*               ^^^^ meta.type.js support.class.js
+/*                   ^ punctuation.section.embedded.end.svelte
+    {/each}
+    {#await p then value: Value}...{:catch { message }: Err}...{/await}
+/*            ^^^^ keyword.control.flow.svelte
+/*                 ^^^^^ variable.other.readwrite.js
+/*                      ^ punctuation.separator.type.js
+/*                        ^^^^^ meta.type.js support.class.js
+/*                             ^ punctuation.section.embedded.end.svelte
+/*                                 ^ punctuation.section.embedded.begin.svelte
+/*                                  ^^^^^^ keyword.control.flow.svelte
+/*                                         ^^^^^^^^^^^ meta.mapping.js
+/*                                           ^^^^^^^ variable.other.readwrite.js
+/*                                                    ^ punctuation.separator.type.js
+/*                                                      ^^^ meta.type.js support.class.js
+/*                                                         ^ punctuation.section.embedded.end.svelte
+    {#each rows as { id }: Row, i}
+/*              ^^ keyword.operator.assignment.as.svelte
+/*                 ^^^^^^ meta.mapping.js
+/*                       ^ punctuation.separator.type.js
+/*                         ^^^ meta.type.js support.class.js
+/*                            ^ punctuation.separator.comma.svelte
+/*                              ^ variable.other.readwrite.js
+    {/each}
+    {#each items as item (item.id as string)}
+/*               ^^ keyword.operator.assignment.as.svelte
+/*                  ^^^^ variable.other.readwrite.js
+/*                       ^ punctuation.section.group.begin.js
+/*                                ^^ keyword.operator.type.js
+/*                                   ^^^^^^ support.type.primitive.string.js
+/*                                         ^ punctuation.section.group.end.js
+/*                                          ^ punctuation.section.embedded.end.svelte
+    {/each}
+    {#each items as Item, i}
+/*               ^^ keyword.operator.assignment.as.svelte
+/*                  ^^^^ variable.other.readwrite.js
+/*                      ^ punctuation.separator.comma.svelte
+/*                        ^ variable.other.readwrite.js
+    {/each}
+    {#each fn(a, b), i}
+/*         ^^ variable.function.js
+/*             ^ punctuation.separator.comma.js
+/*                 ^ punctuation.separator.comma.svelte
+/*                   ^ variable.other.readwrite.js
+    {/each}
+
+###[ BOUNDARIES ]##############################################################
+
+<svelte:boundary onerror={(e) => report(e)}>
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.tag.component.html
+/* <- meta.tag.component.html punctuation.definition.tag.begin.html
+/*^^^^^^^^^^^^^^ entity.name.tag.component.svelte
+/*     ^ punctuation.accessor.svelte
+/*               ^^^^^^^ entity.other.attribute-name.event.svelte
+/*               ^^ support.function.svelte
+/*                 ^^^^^ string.unquoted.svelte
+/*                        ^ punctuation.section.group.begin.js
+/*                         ^ variable.parameter.function.js
+/*                            ^^ keyword.declaration.function.arrow.js
+/*                               ^^^^^^ variable.function.js
+/*                                         ^ punctuation.definition.tag.end.html
+    <FlakyComponent />
+/*   ^^^^^^^^^^^^^^ entity.name.tag.component.svelte
+    <p>{await delayed('hello!')}</p>
+/*      ^^^^^ keyword.control.flow.await.js
+/*            ^^^^^^^ variable.function.js
+/*                    ^^^^^^^^ meta.string.js string.quoted.single.js
+/*                             ^ punctuation.section.embedded.end.svelte
+    {#snippet failed(error, reset)}
+/*   ^^^^^^^^ keyword.control.snippet.begin.svelte
+/*            ^^^^^^ entity.name.function.svelte
+/*                   ^^^^^ variable.parameter.function.js
+/*                        ^ punctuation.separator.parameter.function.js
+/*                          ^^^^^ variable.parameter.function.js
+        <button onclick={reset}>oops! try again</button>
+/*              ^^^^^^^ entity.other.attribute-name.event.svelte
+/*                       ^^^^^ variable.other.readwrite.js
+    {/snippet}
+/*   ^^^^^^^^ keyword.control.snippet.end.svelte
+    {#snippet pending()}
+/*            ^^^^^^^ entity.name.function.svelte
+/*                   ^ punctuation.section.group.begin.js
+        <p>loading...</p>
+    {/snippet}
+</svelte:boundary>
+/* <- meta.tag.component.html punctuation.definition.tag.begin.html
+/*^^^^^^^^^^^^^^^ entity.name.tag.component.svelte
+/*      ^ punctuation.accessor.svelte
+/*               ^ punctuation.definition.tag.end.html
+
+<svelte:boundary {onerror}>
+/*               ^^^^^^^^^ meta.embedded.block.svelte
+/*                ^^^^^^^ variable.other.readwrite.js
+    <FlakyComponent />
+</svelte:boundary>
+
+###[ MARKUP AWAIT ]############################################################
+
+<p>{a} + {b} = {await add(a, b)}</p>
+/*             ^^^^^^^^^^^^^^^^^ meta.embedded.block.svelte
+/*              ^^^^^ keyword.control.flow.await.js
+/*                    ^^^ variable.function.js
+/*                       ^ punctuation.section.group.begin.js
+/*                        ^ variable.other.readwrite.js
+/*                         ^ punctuation.separator.comma.js
+/*                             ^ punctuation.section.embedded.end.svelte
+/*                              ^^^^ meta.tag - meta.embedded
+    {#if await isReady()}
+/*   ^^^ keyword.control.conditional.if.svelte
+/*       ^^^^^ keyword.control.flow.await.js
+/*             ^^^^^^^ variable.function.js
+        <Ready />
+    {/if}
+    {@render row(await item)}
+/*   ^^^^^^^ support.function.svelte
+/*               ^^^^^ keyword.control.flow.await.js
+/*                     ^^^^ variable.other.readwrite.js

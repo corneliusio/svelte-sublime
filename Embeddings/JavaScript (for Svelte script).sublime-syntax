@@ -1,0 +1,17 @@
+%YAML 1.2
+---
+# JavaScript of `<script>` blocks: the stock syntax plus Svelte's runes and
+# special variables. Embedded with `source.js.embedded.html` as embed scope,
+# so scope selectors of third-party packages keep matching.
+scope: source.js.script.svelte
+version: 2
+hidden: true
+
+extends: Packages/JavaScript/JavaScript.sublime-syntax
+
+contexts:
+
+  literal-variable:
+    - meta_prepend: true
+    - include: scope:source.js.embedded.svelte#svelte-runes
+    - include: scope:source.js.embedded.svelte#svelte-special-variables
