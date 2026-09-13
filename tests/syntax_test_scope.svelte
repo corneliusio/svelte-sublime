@@ -1352,6 +1352,24 @@ let c: T;
 /*                                       ^^ keyword.operator.assignment.as.svelte
 /*                                          ^^^^ variable.other.readwrite.js
 /*                                              ^ punctuation.section.embedded.end.svelte
+    {#each items as Array<{a: {b: {c: number}}}> as item}{item}{/each}
+/*               ^^ keyword.operator.type.js
+/*                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.type.js
+/*                                               ^^ keyword.operator.assignment.as.svelte
+/*                                                  ^^^^ variable.other.readwrite.js
+/*                                                      ^ punctuation.section.embedded.end.svelte
+    {#each items as [[[number]]] as item}{item}{/each}
+/*               ^^ keyword.operator.type.js
+/*                  ^^^^^^^^^^^^ meta.type.js
+/*                               ^^ keyword.operator.assignment.as.svelte
+/*                                  ^^^^ variable.other.readwrite.js
+/*                                      ^ punctuation.section.embedded.end.svelte
+    {#each items as (((Item[]))) as item}{item}{/each}
+/*               ^^ keyword.operator.type.js
+/*                  ^^^^^^^^^^^^ meta.type.js
+/*                               ^^ keyword.operator.assignment.as.svelte
+/*                                  ^^^^ variable.other.readwrite.js
+/*                                      ^ punctuation.section.embedded.end.svelte
     {#each items
 /*   ^^^^^ keyword.control.loop.each.svelte */
 /*         ^^^^^ variable.other.readwrite.js */

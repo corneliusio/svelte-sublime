@@ -1,6 +1,8 @@
 name: CI Syntax Tests
 
 on:
+  schedule:
+    - cron: '23 7 * * 1'
   push:
     branches:
       - '**'
@@ -33,16 +35,16 @@ jobs:
             sass_ref: st4134
           - build: 4152
             default_packages: v4152
-            less_ref: master
-            sass_ref: master
+            less_ref: 4149-3.0.5
+            sass_ref: 4134-4.0.2
           - build: 4169
             default_packages: v4169
-            less_ref: master
-            sass_ref: master
+            less_ref: 4149-3.0.5
+            sass_ref: 4169-4.0.2
           - build: 4180
             default_packages: v4180
-            less_ref: master
-            sass_ref: master
+            less_ref: 4149-3.0.5
+            sass_ref: 4169-4.0.2
           - build: latest
             default_packages: master
             less_ref: master
