@@ -272,3 +272,44 @@ Markdown remains **bold** after the unclosed Svelte block.
 {@render row(item)}
 |^^^^^^^ support.function.svelte
 |        ^^^ variable.function.js
+
+# Heading {#snippet row(item)}{@render cell(item)}{/snippet}
+|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown
+|          ^^^^^^^^ keyword.control.snippet.begin.svelte
+|                   ^^^ entity.name.function.svelte
+|                       ^^^^ variable.parameter.function.js
+|                              ^^^^^^^ support.function.svelte
+|                                                  ^^^^^^^^ keyword.control.snippet.end.svelte
+
+- <Button onclick={select} {@attach tooltip}>**Select**</Button>
+| ^^^^^^^^ meta.tag.component.html
+|         ^^^^^^^ entity.other.attribute-name.event.svelte
+|                           ^^^^^^^ support.function.svelte
+|                                            ^^^^^^^^^^ markup.bold.markdown
+
+> {#snippet row(item)}
+|  ^^^^^^^^ keyword.control.snippet.begin.svelte
+|           ^^^ entity.name.function.svelte
+> <Button onclick={select} {@attach tooltip} />
+|         ^^^^^^^ entity.other.attribute-name.event.svelte
+|                           ^^^^^^^ support.function.svelte
+> {@render row($state.snapshot(item))}
+|  ^^^^^^^ support.function.svelte
+|              ^^^^^^ support.function.rune.svelte
+> {/snippet}
+|  ^^^^^^^^ keyword.control.snippet.end.svelte
+
+<script lang="ts">
+    let count: number = $state(0);
+|   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.ts.embedded.html
+|              ^^^^^^ support.type.primitive.number.js
+|                       ^^^^^^ support.function.rune.svelte
+    const doubled = $derived(count * 2);
+|                   ^^^^^^^^ support.function.rune.svelte
+</script>
+
+# After modern syntax
+|^^^^^^^^^^^^^^^^^^^^ markup.heading.1.markdown - source.js - source.ts
+
+Markdown remains **bold**.
+|                ^^^^^^^^ markup.bold.markdown - meta.embedded.block.svelte

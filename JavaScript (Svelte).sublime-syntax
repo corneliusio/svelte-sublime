@@ -1,0 +1,12 @@
+%YAML 1.2
+---
+name: JavaScript (Svelte)
+scope: source.js.svelte
+version: 2
+
+extends: Packages/Svelte/Embeddings/JavaScript (for Svelte script).sublime-syntax
+
+file_extensions:
+  - svelte.js
+
+contexts: {}

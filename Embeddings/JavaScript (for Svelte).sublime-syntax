@@ -8,15 +8,15 @@ extends: Packages/JavaScript/TypeScript.sublime-syntax
 
 variables:
   # the block's `as`: not followed by another `as` outside of brackets, e.g.
-  # the ones of a key expression: `as item (item.id as string)`. Limits: two
+  # the ones of a key expression: `as item (item.id as string)`. Limits: three
   # levels of bracket nesting, string literals are not skipped and a later
   # `as` on another line is invisible (matching is line based).
   svelte_each_as_ahead: |-
     (?x: (?= as{{identifier_break}}
       (?! (?: [^{}(\[]
-            | \( (?: [^()] | \( [^()]* \) )* \)
-            | \[ (?: [^\[\]] | \[ [^\[\]]* \] )* \]
-            | \{ (?: [^{}] | \{ [^{}]* \} )* \}
+            | \( (?: [^()] | \( (?: [^()] | \( [^()]* \) )* \) )* \)
+            | \[ (?: [^\[\]] | \[ (?: [^\[\]] | \[ [^\[\]]* \] )* \] )* \]
+            | \{ (?: [^{}] | \{ (?: [^{}] | \{ [^{}]* \} )* \} )* \}
           )*
           \s as{{identifier_break}} )
     ))

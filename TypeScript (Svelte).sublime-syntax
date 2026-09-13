@@ -1,0 +1,12 @@
+%YAML 1.2
+---
+name: TypeScript (Svelte)
+scope: source.ts.svelte
+version: 2
+
+extends: Packages/Svelte/Embeddings/TypeScript (for Svelte script).sublime-syntax
+
+file_extensions:
+  - svelte.ts
+
+contexts: {}
